@@ -1,0 +1,4 @@
+include ':xposeddemo'
+include ':XposedAppium'
+include ':app'
+rootProject.name = "XposedAppium"
