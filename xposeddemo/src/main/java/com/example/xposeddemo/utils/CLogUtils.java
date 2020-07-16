@@ -2,7 +2,7 @@ package com.example.xposeddemo.utils;
 
 import android.util.Log;
 
-import static Superappium.SuperAppium.TAG;
+import static com.zhenxi.Superappium.SuperAppium.TAG;
 
 
 

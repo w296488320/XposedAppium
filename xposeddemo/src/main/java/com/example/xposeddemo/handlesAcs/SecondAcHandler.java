@@ -3,21 +3,13 @@ package com.example.xposeddemo.handlesAcs;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.view.Window;
-import android.widget.ImageView;
 
 import com.example.xposeddemo.utils.CLogUtils;
-import com.example.xposeddemo.utils.FileUtils;
 
-import java.util.Set;
-
-import Superappium.PageManager;
-import Superappium.ViewImage;
+import com.zhenxi.Superappium.PageManager;
+import com.zhenxi.Superappium.ViewImage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 /**
  * @author Zhenxi on 2020-07-03

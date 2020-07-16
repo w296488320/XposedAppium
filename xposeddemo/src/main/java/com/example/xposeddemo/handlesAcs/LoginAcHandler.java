@@ -2,10 +2,8 @@ package com.example.xposeddemo.handlesAcs;
 
 import android.app.Activity;
 
-import com.example.xposeddemo.utils.CLogUtils;
-
-import Superappium.PageManager;
-import Superappium.ViewImage;
+import com.zhenxi.Superappium.PageManager;
+import com.zhenxi.Superappium.ViewImage;
 
 /**
  * @author Zhenxi on 2020-07-03
