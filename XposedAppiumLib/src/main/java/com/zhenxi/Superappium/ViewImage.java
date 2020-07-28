@@ -191,6 +191,7 @@ public class ViewImage {
         return null;
     }
 
+
     public ViewImage previousSibling() {
         if (parent == null) {
             //root
