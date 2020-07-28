@@ -16,46 +16,6 @@ import de.robv.android.xposed.XposedBridge;
  */
 public class SecondAcHandler implements PageManager.ActivityFocusHandler {
 
-    private static int shadeBitmapX;
-    private static int shadeBitmapY;
-
-
-    static {
-
-        //对滑块进行Hook 方法两种重构类型
-        XposedBridge.hookAllMethods(Canvas.class, "drawBitmap",
-                new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        super.afterHookedMethod(param);
-                        if (PageManager.getTopActivity().getClass().getName().equals("com.example.xposedappium.ui.login.SecondActivity")) {
-
-                            if (param.args[1] instanceof Float) {
-                                //public void drawBitmap(@NonNull Bitmap bitmap, float left, float top, @Nullable Paint paint)
-                                Bitmap bitmap = (Bitmap) param.args[0];
-                                //获取View中心点
-                                float left = (float) param.args[1];
-                                float top = (float) param.args[2];
-//                                ImageView imageView = new ImageView(PageManager.getContext());
-//                                imageView.setImageBitmap(bitmap);
-
-                                shadeBitmapX = (int) ( + bitmap.getWidth() / 2);
-                                shadeBitmapY = (int) (top + bitmap.getHeight() / 2);
-
-
-                                CLogUtils.e("中心点Y " + left);
-                                CLogUtils.e("中心点X " + top);
-
-                            } else {
-                                //public void drawBitmap(@NonNull Bitmap bitmap, @Nullable Rect src, @NonNull Rect dst,@Nullable Paint paint)
-
-                            }
-                        }
-                    }
-                }
-        );
-
-    }
 
     @Override
     public boolean handleActivity(Activity activity, ViewImage root) {

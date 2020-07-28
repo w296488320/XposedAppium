@@ -18,7 +18,7 @@ import com.luozm.captcha.Captcha;
  * @author Zhenxi on 2020-06-29
  */
 public class SecondActivity extends AppCompatActivity {
-    private Captcha captcha;
+//    private Captcha captcha;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,27 +27,27 @@ public class SecondActivity extends AppCompatActivity {
 
 
 
-        captcha = (Captcha) findViewById(R.id.captCha);
-        captcha.setMaxFailedCount(10);
-        captcha.setCaptchaListener(new Captcha.CaptchaListener() {
-            @Override
-            public String onAccess(long time) {
-                Toast.makeText(getBaseContext(),"验证成功",Toast.LENGTH_SHORT).show();
-                return "验证通过,耗时"+time+"毫秒";
-            }
-
-            @Override
-            public String onFailed(int failedCount) {
-                Toast.makeText(getBaseContext(),"验证失败",Toast.LENGTH_SHORT).show();
-                return "验证失败,已失败"+failedCount+"次";
-            }
-
-            @Override
-            public String onMaxFailed() {
-                Toast.makeText(getBaseContext(),"验证超过次数，你的帐号被封锁",Toast.LENGTH_SHORT).show();
-                return "验证失败,帐号已封锁";
-            }
-        });
+//        captcha = (Captcha) findViewById(R.id.captCha);
+//        captcha.setMaxFailedCount(10);
+//        captcha.setCaptchaListener(new Captcha.CaptchaListener() {
+//            @Override
+//            public String onAccess(long time) {
+//                Toast.makeText(getBaseContext(),"验证成功",Toast.LENGTH_SHORT).show();
+//                return "验证通过,耗时"+time+"毫秒";
+//            }
+//
+//            @Override
+//            public String onFailed(int failedCount) {
+//                Toast.makeText(getBaseContext(),"验证失败",Toast.LENGTH_SHORT).show();
+//                return "验证失败,已失败"+failedCount+"次";
+//            }
+//
+//            @Override
+//            public String onMaxFailed() {
+//                Toast.makeText(getBaseContext(),"验证超过次数，你的帐号被封锁",Toast.LENGTH_SHORT).show();
+//                return "验证失败,帐号已封锁";
+//            }
+//        });
 
         showMyDialog();
 
