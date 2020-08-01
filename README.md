@@ -3,9 +3,8 @@
 # XposedAppium
 
 ## 简介:
-基于Xposed做的一款自动化点击，滑动框架（基于安卓原生的事件分发）。可以模拟手指的一切操作，基于Xpath表达式获取View。此框架在virjar大佬的框架基础上进行的修改的，修复了部分Bug，添加常用方法等。
-
->https://github.com/virjar/
+基于Xposed做的一款自动化点击，滑动框架（基于安卓原生的事件分发）。可以模拟手指的一切操作 。
+基于Xpath表达式获取View。
 
 
 
@@ -79,3 +78,8 @@ XposedAppiumLib: XposedAppium库
 | swipeDown                  | 向下滑动，负值为向上                                         |
 | toString                   | 打印当前view包括子view的全部属性                             |
 
+
+
+##Demo使用说明可参考 :
+
+https://bbs.pediy.com/thread-260992-1.htm#1655864
