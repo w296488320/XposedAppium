@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -91,7 +92,24 @@ public class ViewImage {
         }
         return (T) valueGetter.get();
     }
+    private int[] location = null;
 
+    public int[] locationOnScreen() {
+        if (location != null) {
+            return location;
+        }
+        location = new int[2];
+        originView.getLocationOnScreen(location);
+        return location;
+    }
+
+    public int X() {
+        return locationOnScreen()[0];
+    }
+
+    public int Y() {
+        return locationOnScreen()[1];
+    }
 
     public View getOriginView() {
         return originView;
@@ -341,26 +359,22 @@ public class ViewImage {
      * 点击当前View
      */
     public boolean click() {
-        if (originView.isClickable()) {
-            if (originView.performClick()) {
-                return true;
-            }
-            if (originView.callOnClick()) {
-                return true;
-            }
-        }
-        //再次封装，主要针对ListView这种特殊条目View
-        ViewImage parentViewImage = parentNode();
-        if (parentViewImage != null) {
-            View parentOriginView = parentViewImage.getOriginView();
-            if (parentOriginView instanceof AdapterView) {
-                if (!originView.performClick()) {
-                    if (clickAdapterView((AdapterView) parentOriginView, originView)) {
-                        return true;
-                    }
-                }
-            }
-        }
+//        if (originView.isClickable()) {
+//            if (originView.performClick()) {
+//                return true;
+//            }
+//        }
+//        ViewImage parentViewImage = parentNode();
+//        if (parentViewImage != null) {
+//            View parentOriginView = parentViewImage.getOriginView();
+//            if (parentOriginView instanceof AdapterView) {
+//                if (!originView.performClick()) {
+//                    if (clickAdapterView((AdapterView) parentOriginView, originView)) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
         return clickV2();
     }
 
@@ -414,12 +428,20 @@ public class ViewImage {
         return clickByPoint(floats[0], floats[1]);
     }
 
+    private static Random random = new Random();
+
     private float[] measureClickPoint() {
         int[] locs = new int[2];
         originView.getLocationOnScreen(locs);
-        //中心点
-        float x = locs[0] + originView.getWidth() / 2;
-        float y = locs[1] + originView.getHeight() / 2;
+        float x = locs[0];//+ ((float) originView.getWidth() / 4) + random.nextInt(originView.getWidth() / 4);
+        float y = locs[1];//+ ((float) originView.getHeight() / 4) + random.nextInt(originView.getHeight() / 4);
+
+        if (originView.getWidth() > 5) {
+            x += ((float) originView.getWidth() / 4) + random.nextInt(originView.getWidth() / 4);
+        }
+        if (originView.getHeight() > 5) {
+            y += ((float) originView.getHeight() / 4) + random.nextInt(originView.getHeight() / 4);
+        }
 
         float[] ret = new float[2];
         ret[0] = x;
@@ -440,13 +462,67 @@ public class ViewImage {
         int viewHeight = originView.getHeight();
 
         int fromX = (int) (locs[0] + viewWidth * (ThreadLocalRandom.current().nextDouble(0.4) - 0.2));
+        if (fromX < 2) {
+            fromX = 2;
+        }
         int toX = (int) (fromX + viewWidth * (ThreadLocalRandom.current().nextDouble(0.1)));
 
 
-        int fromY = (int) (locs[1] + viewHeight * ThreadLocalRandom.current().nextDouble(0.1));
-        int toY = fromY + height;
-        SwipeUtils.simulateScroll(this, fromX, fromY, toX, toY);
+        int fromY, toY;
+        if (height > 0) {
+            fromY = (int) (locs[1] + viewHeight * ThreadLocalRandom.current().nextDouble(0.1));
+            if (fromY < 2) {
+                fromY = 2;
+            }
+            toY = fromY + height;
+        } else {
+            fromY = (int) (locs[1] + viewHeight * (ThreadLocalRandom.current().nextDouble(0.1) + 0.9));
+            toY = fromY + height;
+            if (toY < 2) {
+                toY = 2;
+            }
+        }
+        SwipeUtils.simulateScroll(this, fromX, fromY, toX, toY, 400, 50);
 
+    }
+
+    /**
+     * 向右滑动
+     *
+     * @param width 滑动宽度，如果为负数，则向左滑动
+     */
+    @SuppressLint("NewApi")
+    public void swipeRight(int width) {
+        int[] locs = new int[2];
+        originView.getLocationOnScreen(locs);
+
+        int viewWidth = originView.getWidth();
+        int viewHeight = originView.getHeight();
+
+        int fromY = (int) (locs[1] + viewHeight * (ThreadLocalRandom.current().nextDouble(0.05) - 0.025 + 0.5));
+        if (fromY < 2) {
+            fromY = 2;
+        }
+        int toY = (int) (fromY + viewHeight * (ThreadLocalRandom.current().nextDouble(0.008)));
+
+        int fromX, toX;
+
+        if (width > 0) {
+            fromX = (int) (locs[0] + viewWidth * ThreadLocalRandom.current().nextDouble(0.1));
+            if (fromX < 2) {
+                fromX = 2;
+            }
+            toX = fromX + width;
+        } else {
+            fromX = (int) (locs[0] + viewWidth * (ThreadLocalRandom.current().nextDouble(0.1) + 0.9));
+            toX = fromX + width;
+            if (toX < 2) {
+                toX = 2;
+            }
+        }
+//        Log.i(SuperAppium.TAG, "location on screen: (" + locs[0] + "," + locs[1] + ")  from loc:("
+//                + fromX + "," + fromY + ") to loc:(" + toX + "," + toY + ") with and height: (" + viewWidth + "," + viewHeight + ")");
+        SwipeUtils.simulateScroll(this, fromX, fromY, toX, toY, 300, 50);
     }
 
     private MotionEvent genMotionEvent(int action, float[] point) {
