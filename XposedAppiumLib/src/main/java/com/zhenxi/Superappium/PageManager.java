@@ -31,9 +31,12 @@ public class PageManager {
 
     static {
         //废掉9.0+ Hide Api检测
-        HiddenAPIEnforcementPolicyUtils.passApiCheck();
 
-        init();
+        // 不能直接废掉，部分app存在对这个flag的检测，如果你的反射被阻断，请使用 { @link com.zhenxi.Superappium.xpcompat.FreeReflection}
+        // com.zhenxi.Superappium.xpcompat.CompatHelpers 中默认使用 FreeReflection进行反射操作
+        // HiddenAPIEnforcementPolicyUtils.passApiCheck();
+
+        //init();
         // 激活页面监控
         enablePageMonitor();
     }
@@ -66,6 +69,7 @@ public class PageManager {
 
     /**
      * 主要是为了拿到对方进程的classloader 方便后续
+     * @deprecated  过期，此方法兼容性有问题。定制化框架下，hook框架入口点可能在attach之后。此时拦截不到此流程。<br>我们在dispatchActivityResumed的时候直接拦截也可以拿到这两个字段
      */
     private static void init() {
         try {
@@ -149,11 +153,16 @@ public class PageManager {
      * 设置show方法的回调
      *
      * @param listener 对应的Listener
+     * @deprecated
      */
     public static void SetDialogShowListener(AlertDialogShowListener listener) {
         if (listener != null) {
             mAfterAlertDialogShowListener = listener;
         }
+    }
+
+    public static void setDialogShowListener(AlertDialogShowListener listener) {
+        SetDialogShowListener(listener);
     }
 
     public static void addHandler(String activityClassName, ActivityFocusHandler activityFocusHandler) {
@@ -335,7 +344,10 @@ public class PageManager {
                         public void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             super.beforeHookedMethod(param);
                             topActivity = (Activity) param.args[0];
-
+                            if (mContext == null) {
+                                mContext = topActivity.getApplicationContext();
+                                mClassLoader = topActivity.getClassLoader();
+                            }
                             trigger();
                         }
                     });
