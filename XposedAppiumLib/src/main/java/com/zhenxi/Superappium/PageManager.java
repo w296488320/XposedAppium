@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.PopupWindow;
 
-
 import com.zhenxi.Superappium.utils.HiddenAPIEnforcementPolicyUtils;
+import com.zhenxi.Superappium.xpcompat.CompatHelpers;
+import com.zhenxi.Superappium.xpcompat.CompatMethodHook;
+import com.zhenxi.Superappium.xpcompat.XpCompatEngine;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -23,10 +25,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 
 public class PageManager {
@@ -39,9 +37,10 @@ public class PageManager {
         // 激活页面监控
         enablePageMonitor();
     }
-    private static Context mContext= null;
 
-    private static ClassLoader mClassLoader= null;
+    private static Context mContext = null;
+
+    private static ClassLoader mClassLoader = null;
 
     private static HashMap<String, ActivityFocusHandler> activityFocusHandlerMap = new HashMap<>();
 
@@ -57,22 +56,24 @@ public class PageManager {
     /**
      * 返回当前进程的Context
      */
-    public static Context getContext(){
+    public static Context getContext() {
         return mContext;
     }
-    public static ClassLoader getClassloader(){
+
+    public static ClassLoader getClassloader() {
         return mClassLoader;
     }
+
     /**
      * 主要是为了拿到对方进程的classloader 方便后续
      */
     private static void init() {
         try {
-            XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
+            CompatHelpers.findAndHookMethod(Application.class, "attach", Context.class, new CompatMethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                public void afterHookedMethod(MethodHookParam param) throws Throwable {
                     super.afterHookedMethod(param);
-                    mContext= (Context) param.args[0];
+                    mContext = (Context) param.args[0];
                     mClassLoader = ((Context) param.args[0]).getClassLoader();
                 }
             });
@@ -97,9 +98,6 @@ public class PageManager {
     }
 
 
-
-
-
     /**
      * 任务间隔
      */
@@ -116,15 +114,13 @@ public class PageManager {
     private static Set<WeakReference<PopupWindow>> popupWindowSets = new CopyOnWriteArraySet<>();
 
 
-
-    public static Set<WeakReference<Window>>  getWindos(){
-        return dialogWindowsSets ;
+    public static Set<WeakReference<Window>> getWindos() {
+        return dialogWindowsSets;
     }
 
-    public static Set<WeakReference<PopupWindow>>  getPopWindos(){
-        return popupWindowSets ;
+    public static Set<WeakReference<PopupWindow>> getPopWindos() {
+        return popupWindowSets;
     }
-
 
 
     /**
@@ -199,7 +195,7 @@ public class PageManager {
                 popupWindowSets.remove(popupWindowWeakReference);
                 continue;
             }
-            View mDecorView = (View) XposedHelpers.getObjectField(popupWindow, "mDecorView");
+            View mDecorView = (View) CompatHelpers.getObjectField(popupWindow, "mDecorView");
             if (mDecorView == null) {
                 continue;
             }
@@ -216,7 +212,7 @@ public class PageManager {
      * 根据xpath表达式
      * 从可能出现在最上层的view上进行遍历查找
      * 可能存在悬浮窗+和对话同时存在的情况，这时候会有多个Window
-     *
+     * <p>
      * 使用者不应该关注这些，把可能在上层出现的存在的情况进行遍历
      */
     public static ViewImage tryGetTopView(String xpath) {
@@ -239,13 +235,13 @@ public class PageManager {
             }
         }
         //尝试从pupwindow获取
-        for (WeakReference<PopupWindow> popupWindowWeakReference :  PageManager.getPopWindos()) {
+        for (WeakReference<PopupWindow> popupWindowWeakReference : PageManager.getPopWindos()) {
             PopupWindow popupWindow = popupWindowWeakReference.get();
             if (popupWindow == null) {
                 PageManager.getPopWindos().remove(popupWindowWeakReference);
                 continue;
             }
-            View mDecorView = (View) XposedHelpers.getObjectField(popupWindow, "mDecorView");
+            View mDecorView = (View) CompatHelpers.getObjectField(popupWindow, "mDecorView");
             if (mDecorView == null) {
                 continue;
             }
@@ -303,7 +299,7 @@ public class PageManager {
         if (fragmentObject == null) {
             return null;
         }
-        boolean isVisible = (boolean) XposedHelpers.callMethod(fragmentObject, "isVisible");
+        boolean isVisible = (boolean) CompatHelpers.callMethod(fragmentObject, "isVisible");
         if (isVisible) {
             return fragmentObject;
         } else {
@@ -320,7 +316,7 @@ public class PageManager {
     private static void enablePageMonitor() {
         try {
 //            Xpo
-//            sedHelpers.findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
+//            sedHelpers.findAndHookMethod(Activity.class, "onResume", new CompatMethodHook() {
 //                @Override
 //                protected void afterHookedMethod(MethodHookParam param) {
 //
@@ -333,10 +329,10 @@ public class PageManager {
 //                }
 //            });
 
-            XposedHelpers.findAndHookMethod(Application.class, "dispatchActivityResumed",
-                    Activity.class, new XC_MethodHook() {
+            CompatHelpers.findAndHookMethod(Application.class, "dispatchActivityResumed",
+                    Activity.class, new CompatMethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        public void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             super.beforeHookedMethod(param);
                             topActivity = (Activity) param.args[0];
 
@@ -350,27 +346,27 @@ public class PageManager {
         Class<?> fragmentClass = null;
         try {
 
-            XC_MethodHook rc_methodHook = new XC_MethodHook() {
+            CompatMethodHook rc_methodHook = new CompatMethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) {
+                public void afterHookedMethod(MethodHookParam param) {
                     Log.i(SuperAppium.TAG, "onFragment resume: " + param.thisObject.getClass().getName());
                     topFragmentMaps.put(param.thisObject.getClass().getName(), param.thisObject);
                 }
             };
             //尝试Hook
-            XposedHelpers.findAndHookMethod(Fragment.class, "onResume", rc_methodHook);
+            CompatHelpers.findAndHookMethod(Fragment.class, "onResume", rc_methodHook);
 
             fragmentClass = mClassLoader.loadClass("android.support.v4.app.Fragment");
 
             if (fragmentClass != null) {
-                XposedHelpers.findAndHookMethod(fragmentClass, "onResume", rc_methodHook);
+                CompatHelpers.findAndHookMethod(fragmentClass, "onResume", rc_methodHook);
             }
         } catch (Throwable e) {
             //ignore
         }
 
         //android.app.LocalActivityManager.LocalActivityManager
-//        XposedHelpers.findAndHookConstructor(LocalActivityManager.class, Activity.class, boolean.class, new RC_MethodHook() {
+//        CompatHelpers.findAndHookConstructor(LocalActivityManager.class, Activity.class, boolean.class, new RC_MethodHook() {
 //            @Override
 //            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 //                localActivityManagers.add(new WeakReference<>((LocalActivityManager) param.thisObject));
@@ -380,10 +376,10 @@ public class PageManager {
 
         //弹窗不被 activity管理
         try {
-            XposedBridge.hookAllConstructors(Dialog.class, new XC_MethodHook() {
+            XpCompatEngine.hookAllConstructors(Dialog.class, new CompatMethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    Window mWindow = (Window) XposedHelpers.getObjectField(param.thisObject, "mWindow");
+                public void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    Window mWindow = (Window) CompatHelpers.getObjectField(param.thisObject, "mWindow");
                     if (mWindow == null) {
                         Log.w(SuperAppium.TAG, "can not get windows object for dialog: " + param.thisObject.getClass().getName());
                         return;
@@ -400,9 +396,9 @@ public class PageManager {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Dialog.class, "show", new XC_MethodHook() {
+            CompatHelpers.findAndHookMethod(Dialog.class, "show", new CompatMethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                public void afterHookedMethod(MethodHookParam param) throws Throwable {
                     if (mAfterAlertDialogShowListener != null) {
                         Dialog DialogObject = (Dialog) param.thisObject;
                         mAfterAlertDialogShowListener.DialogShow(DialogObject);
@@ -416,9 +412,9 @@ public class PageManager {
 
         //popupWindow不被activity管理
         try {
-            XposedHelpers.findAndHookConstructor(PopupWindow.class, View.class, int.class, int.class, boolean.class, new XC_MethodHook() {
+            CompatHelpers.findAndHookConstructor(PopupWindow.class, View.class, int.class, int.class, boolean.class, new CompatMethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                public void afterHookedMethod(MethodHookParam param) throws Throwable {
                     Log.i(SuperAppium.TAG, "create PopupWindow: " + param.thisObject.getClass().getName());
                     popupWindowSets.add(new WeakReference<>((PopupWindow) param.thisObject));
                 }
@@ -475,7 +471,7 @@ public class PageManager {
                     return;
                 }
                 try {
-                    if (fragmentFocusHandler.handleFragmentPage(fragment, activity, new ViewImage((View) XposedHelpers.callMethod(fragment, "getView")))) {
+                    if (fragmentFocusHandler.handleFragmentPage(fragment, activity, new ViewImage((View) CompatHelpers.callMethod(fragment, "getView")))) {
                         return;
                     }
                 } catch (Throwable throwable) {
