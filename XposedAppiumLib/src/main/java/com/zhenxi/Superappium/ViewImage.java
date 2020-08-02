@@ -292,6 +292,13 @@ public class ViewImage {
         return viewImages.get(0);
     }
 
+    /**
+     * 尝试对ListItem 进行点击
+     *
+     * @param parent
+     * @param mView
+     * @return
+     */
     private boolean clickAdapterView(AdapterView parent, View mView) {
 
         final int position = parent.getPositionForView(mView);
@@ -359,23 +366,24 @@ public class ViewImage {
      * 点击当前View
      */
     public boolean click() {
-//        if (originView.isClickable()) {
-//            if (originView.performClick()) {
-//                return true;
-//            }
-//        }
-//        ViewImage parentViewImage = parentNode();
-//        if (parentViewImage != null) {
-//            View parentOriginView = parentViewImage.getOriginView();
-//            if (parentOriginView instanceof AdapterView) {
-//                if (!originView.performClick()) {
-//                    if (clickAdapterView((AdapterView) parentOriginView, originView)) {
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-        return clickV2();
+        if (originView.isClickable()) {
+            if (originView.performClick()) {
+                return true;
+            }
+        }
+        if(!clickV2()) {
+            //开始尝试对ListItem进行点击,ListItem需要List事件分发(onItemClick)才会生效
+            ViewImage parentViewImage = parentNode();
+            if (parentViewImage != null) {
+                View parentOriginView = parentViewImage.getOriginView();
+                if (parentOriginView instanceof AdapterView) {
+                    if (!originView.performClick()) {
+                        return clickAdapterView((AdapterView) parentOriginView, originView);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 
