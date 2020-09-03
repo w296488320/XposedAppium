@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.PopupWindow;
 
-import com.zhenxi.Superappium.utils.HiddenAPIEnforcementPolicyUtils;
 import com.zhenxi.Superappium.xpcompat.CompatHelpers;
 import com.zhenxi.Superappium.xpcompat.CompatMethodHook;
 import com.zhenxi.Superappium.xpcompat.XpCompatEngine;
@@ -348,7 +347,7 @@ public class PageManager {
                                 mContext = topActivity.getApplicationContext();
                                 mClassLoader = topActivity.getClassLoader();
                             }
-                            trigger();
+                            triggerActivity();
                         }
                     });
         } catch (Exception e) {
@@ -363,6 +362,8 @@ public class PageManager {
                 public void afterHookedMethod(MethodHookParam param) {
                     Log.i(SuperAppium.TAG, "onFragment resume: " + param.thisObject.getClass().getName());
                     topFragmentMaps.put(param.thisObject.getClass().getName(), param.thisObject);
+
+                    triggerFragment();
                 }
             };
             //尝试Hook
@@ -438,7 +439,7 @@ public class PageManager {
     }
 
 
-    public static void trigger() {
+    public static void triggerActivity() {
 
         final Activity activity = topActivity;
         if (activity == null) {
@@ -457,6 +458,10 @@ public class PageManager {
             triggerActivityActive(activity, iActivityHandler, 0);
         }
 
+    }
+
+
+    public static void triggerFragment() {
         for (String theFragmentClassName : topFragmentMaps.keySet()) {
             Object topFragment = getTopFragment(theFragmentClassName);
             if (topFragment == null) {
@@ -466,10 +471,9 @@ public class PageManager {
             if (fragmentFocusHandler == null) {
                 continue;
             }
-            triggerFragmentActive(activity, topFragment, fragmentFocusHandler, 0);
+            triggerFragmentActive(getTopActivity(), topFragment, fragmentFocusHandler, 0);
         }
     }
-
 
     private static void triggerFragmentActive(final Activity activity, final Object fragment, final FragmentFocusHandler fragmentFocusHandler, final int triggerCount) {
         if (disable) {

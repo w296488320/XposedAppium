@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.zhenxi.Superappium.traversor.Collector;
 import com.zhenxi.Superappium.traversor.Evaluator;
 import com.zhenxi.Superappium.traversor.SuperAppiumDumper;
+import com.zhenxi.Superappium.utils.ThreadUtils;
 import com.zhenxi.Superappium.xmodel.LazyValueGetter;
 import com.zhenxi.Superappium.xmodel.ValueGetters;
 import com.zhenxi.Superappium.xpath.XpathParser;
@@ -366,11 +367,6 @@ public class ViewImage {
      * 点击当前View
      */
     public boolean click() {
-        if (originView.isClickable()) {
-            if (originView.performClick()) {
-                return true;
-            }
-        }
         if(!clickV2()) {
             //开始尝试对ListItem进行点击,ListItem需要List事件分发(onItemClick)才会生效
             ViewImage parentViewImage = parentNode();
@@ -383,6 +379,13 @@ public class ViewImage {
                 }
             }
         }
+        if (originView.isClickable()) {
+            if (originView.performClick()) {
+                return true;
+            }
+        }
+
+
         return false;
     }
 
