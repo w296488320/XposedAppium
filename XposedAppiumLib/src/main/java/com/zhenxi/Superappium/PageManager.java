@@ -374,6 +374,13 @@ public class PageManager {
             if (fragmentClass != null) {
                 CompatHelpers.findAndHookMethod(fragmentClass, "onResume", rc_methodHook);
             }
+
+            Class<?>  AndroidXFragmentClass = mClassLoader.loadClass("androidx.fragment.app.Fragment");
+
+            if (AndroidXFragmentClass != null) {
+                CompatHelpers.findAndHookMethod(AndroidXFragmentClass, "onResume", rc_methodHook);
+            }
+
         } catch (Throwable e) {
             //ignore
         }
