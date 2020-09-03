@@ -4,6 +4,9 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.util.Log;
 
+import com.zhenxi.Superappium.utils.MyClassUtils;
+import com.zhenxi.Superappium.utils.MyMemberUtils;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -25,14 +28,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipFile;
 
 import dalvik.system.DexFile;
-import external.org.apache.commons.lang3.ClassUtils;
-import external.org.apache.commons.lang3.reflect.MemberUtils;
+
 
 public class CompatHelpers {
     private static final HashMap<String, Field> fieldCache = new HashMap<>();
@@ -62,7 +65,7 @@ public class CompatHelpers {
         if (classLoader == null)
             classLoader = XpCompatEngine.class.getClassLoader();
         try {
-            return ClassUtils.getClass(classLoader, className, false);
+            return MyClassUtils.getClass(classLoader, className, false);
         } catch (ClassNotFoundException e) {
             throw new ClassNotFoundError(e);
         }
@@ -425,9 +428,9 @@ public class CompatHelpers {
                     continue;
 
                 // compare name and parameters
-                if (method.getName().equals(methodName) && ClassUtils.isAssignable(parameterTypes, method.getParameterTypes(), true)) {
+                if (method.getName().equals(methodName) && MyClassUtils.isAssignable(parameterTypes, method.getParameterTypes(), true)) {
                     // get accessible version of method
-                    if (bestMatch == null || MemberUtils.compareParameterTypes(
+                    if (bestMatch == null || MyMemberUtils.compareParameterTypes(
                             method.getParameterTypes(),
                             bestMatch.getParameterTypes(),
                             parameterTypes) < 0) {
@@ -662,9 +665,9 @@ public class CompatHelpers {
         Constructor<?>[] constructors = FreeReflection.getDeclaredConstructors(clazz);
         for (Constructor<?> constructor : constructors) {
             // compare name and parameters
-            if (ClassUtils.isAssignable(parameterTypes, constructor.getParameterTypes(), true)) {
+            if (MyClassUtils.isAssignable(parameterTypes, constructor.getParameterTypes(), true)) {
                 // get accessible version of method
-                if (bestMatch == null || MemberUtils.compareParameterTypes(
+                if (bestMatch == null || MyMemberUtils.compareParameterTypes(
                         constructor.getParameterTypes(),
                         bestMatch.getParameterTypes(),
                         parameterTypes) < 0) {
