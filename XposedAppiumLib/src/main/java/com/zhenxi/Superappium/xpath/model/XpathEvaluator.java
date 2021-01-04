@@ -59,11 +59,11 @@ public abstract class XpathEvaluator {
 
         private List<XNode> handleNode(List<XNode> input, final XpathNode xpathNode) {
 
-            // ç›®å‰åªæ”¯æŒå¯¹elementå…ƒç´ è¿›è¡ŒæŠ½å–,å¦‚æœä¸­é€”æŠ½å–åˆ°äº†æ–‡æœ¬,åˆ™ä¼šæ–­èŠ‚
+            // Ä¿Ç°Ö»Ö§³Ö¶ÔelementÔªËØ½øĞĞ³éÈ¡,Èç¹ûÖĞÍ¾³éÈ¡µ½ÁËÎÄ±¾,Ôò»á¶Ï½Ú
             ViewImages elements = XpathUtil.transformToElement(input);
             ViewImages contextElements;
 
-            // è½´
+            // Öá
             AxisFunction axis = xpathNode.getAxis();
             if (axis != null) {
                 contextElements = new ViewImages();
@@ -77,16 +77,16 @@ public abstract class XpathEvaluator {
                 contextElements = elements;
             }
 
-            // è°ƒç”¨æŠ½å–å‡½æ•°
+            // µ÷ÓÃ³éÈ¡º¯Êı
             List<XNode> xNodesList = xpathNode.getSelectFunction().call(xpathNode.getScopeEm(),
                     contextElements, xpathNode.getSelectParams());
-            // è°“è¯­è¿‡æ»¤
+            // Î½Óï¹ıÂË
             if (xpathNode.getPredicates() == null || xpathNode.getPredicates().size() == 0) {
                 return xNodesList;
             }
 
             List<XNode> finalResult = new LinkedList<>();
-            //ä¸¤å±‚å¾ªç¯
+            //Á½²ãÑ­»·
             for (XNode xNode : xNodesList) {
                 if (xNode.isText()) {
                     continue;
@@ -107,11 +107,11 @@ public abstract class XpathEvaluator {
 
         @Override
         public XNodes evaluate(XNodes elements) {
-            for (XpathNode xpathNode : xpathNodeList) {// å¯¹xpathè¯­æ³•æ ‘ä¸Šé¢æ¯ä¸ªèŠ‚ç‚¹è¿›è¡ŒæŠ½å–
+            for (XpathNode xpathNode : xpathNodeList) {// ¶ÔxpathÓï·¨Ê÷ÉÏÃæÃ¿¸ö½Úµã½øĞĞ³éÈ¡
                 // Log.i(SuperAppium.TAG, "before evaluate: " + xpathNode + ": " + StringUtils.join(elements));
                 elements = new XNodes(handleNode(elements, xpathNode));
                 // Log.i(SuperAppium.TAG, "after evaluate: " + xpathNode + ": " + StringUtils.join(elements));
-                if (elements.isEmpty()) {// å¦‚æœå·²ç»ä¸ºç©º,ç»ˆæ­¢æŠ½å–é“¾
+                if (elements.isEmpty()) {// Èç¹ûÒÑ¾­Îª¿Õ,ÖÕÖ¹³éÈ¡Á´
                     return elements;
                 }
             }

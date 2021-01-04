@@ -21,12 +21,12 @@ public class ExpressionParser {
     }
 
     private SyntaxNode innerParse() throws XpathSyntaxErrorException {
-        // è¡¨è¾¾å¼æ‹†åˆ†æˆtokenæµ
+        // ±í´ïÊ½²ğ·Ö³ÉtokenÁ÷
         List<TokenHolder> tokenStream = tokenStream();
 
-        // æ„å»ºé€†æ³¢å…°å¼
+        // ¹¹½¨Äæ²¨À¼Ê½
         Stack<TokenHolder> stack = new Stack<>();
-        // RPNå°±æ˜¯é€†æ³¢å…°å¼çš„å«ä¹‰
+        // RPN¾ÍÊÇÄæ²¨À¼Ê½µÄº¬Òå
         List<TokenHolder> RPN = new LinkedList<>();
         TokenHolder bottom = new TokenHolder("#", null);
         stack.push(bottom);
@@ -49,7 +49,7 @@ public class ExpressionParser {
             RPN.add(stack.pop());
         }
 
-        // æ„å»ºè®¡ç®—æ ‘
+        // ¹¹½¨¼ÆËãÊ÷
         Stack<SyntaxNode> computeStack = new Stack<>();
 
         for (TokenHolder tokenHolder : RPN) {
@@ -68,12 +68,12 @@ public class ExpressionParser {
         try {
             return innerParse();
         } catch (EmptyStackException e) {
-            throw new XpathSyntaxErrorException(0, "ä¸èƒ½è¯†åˆ«è¡¨è¾¾å¼:" + expressionTokenQueue.getQueue(), e);
+            throw new XpathSyntaxErrorException(0, "²»ÄÜÊ¶±ğ±í´ïÊ½:" + expressionTokenQueue.getQueue(), e);
         }
     }
 
     private SyntaxNode buildAlgorithmUnit(TokenHolder tokenHolder, SyntaxNode left, SyntaxNode right) {
-        // å¯¹äºè®¡ç®—æ ‘,å±äºå†…éƒ¨èŠ‚ç‚¹,éœ€è¦é™„åŠ å·¦å³æ“ä½œæ ‘,ä¸èƒ½å•çº¯æ ¹æ®tokenä¿¡æ¯äº§ç”ŸèŠ‚ç‚¹
+        // ¶ÔÓÚ¼ÆËãÊ÷,ÊôÓÚÄÚ²¿½Úµã,ĞèÒª¸½¼Ó×óÓÒ²Ù×÷Ê÷,²»ÄÜµ¥´¿¸ù¾İtokenĞÅÏ¢²úÉú½Úµã
         // Preconditions.checkArgument(tokenHolder.type.equals(Token.OPERATOR));
         AlgorithmUnit algorithmUnit = OperatorEnv.createByName(tokenHolder.expression);
         algorithmUnit.setLeft(left);
@@ -82,10 +82,10 @@ public class ExpressionParser {
     }
 
     /**
-     * éæ“ä½œç¬¦çš„èŠ‚ç‚¹æ„å»º,å¦‚å‡½æ•°,xpathè¡¨è¾¾å¼,å¸¸é‡,æ•°å­—ç­‰,ä»–ä»¬çš„æ„é€ æ–¹æ³•å’Œè®¡ç®—æ ‘æ— å…³,æ˜¯è¡¨è¾¾å¼é‡Œé¢æœ€åŸå§‹çš„è®¡ç®—å¶èŠ‚ç‚¹
+     * ·Ç²Ù×÷·ûµÄ½Úµã¹¹½¨,Èçº¯Êı,xpath±í´ïÊ½,³£Á¿,Êı×ÖµÈ,ËûÃÇµÄ¹¹Ôì·½·¨ºÍ¼ÆËãÊ÷ÎŞ¹Ø,ÊÇ±í´ïÊ½ÀïÃæ×îÔ­Ê¼µÄ¼ÆËãÒ¶½Úµã
      *
-     * @param tokenHolder tokenæ•°æ®
-     * @return ç”¨æ¥æŒ‚åœ¨è®¡ç®—æ ‘ä¸Šé¢çš„å¶èŠ‚ç‚¹
+     * @param tokenHolder tokenÊı¾İ
+     * @return ÓÃÀ´¹ÒÔÚ¼ÆËãÊ÷ÉÏÃæµÄÒ¶½Úµã
      */
     private SyntaxNode buildByTokenHolder(TokenHolder tokenHolder) throws XpathSyntaxErrorException {
         //Preconditions.checkArgument(!tokenHolder.type.equals(Token.OPERATOR));
@@ -94,14 +94,14 @@ public class ExpressionParser {
     }
 
     private int compareSymbolPripority(TokenHolder first, TokenHolder second) {
-        // ä¸èƒ½ç›´æ¥å‡,å¦åˆ™å¯èƒ½æº¢å‡º
+        // ²»ÄÜÖ±½Ó¼õ,·ñÔò¿ÉÄÜÒç³ö
         return Integer.valueOf(OperatorEnv.judgePriority(first.expression))
                 .compareTo(OperatorEnv.judgePriority(second.expression));
     }
 
     private List<TokenHolder> tokenStream() throws XpathSyntaxErrorException {
         List<TokenHolder> tokenStream = new LinkedList<>();
-        // javaä¸æ”¯æŒé€—å·è¡¨è¾¾å¼,è¿™ä¹ˆåšè¾¾åˆ°äº†é€—å·è¡¨è¾¾å¼çš„æ•ˆæœ
+        // java²»Ö§³Ö¶ººÅ±í´ïÊ½,ÕâÃ´×ö´ïµ½ÁË¶ººÅ±í´ïÊ½µÄĞ§¹û
         while ((expressionTokenQueue.consumeWhitespace() || !expressionTokenQueue.consumeWhitespace())
                 && !expressionTokenQueue.isEmpty()) {
 
@@ -116,7 +116,7 @@ public class ExpressionParser {
                 break;
             }
             if (!hint) {
-                // ä¸æˆåŠŸ,æŠ¥é”™
+                // ²»³É¹¦,±¨´í
                 throw new XpathSyntaxErrorException(expressionTokenQueue.nowPosition(), "can not parse predicate"
                         + expressionTokenQueue.getQueue() + "  for token " + expressionTokenQueue.remainder());
             }

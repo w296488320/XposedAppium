@@ -10,10 +10,10 @@ import java.util.List;
 
 public class XpathNode {
     public enum ScopeEm {
-        INCHILREN("/"), // é»˜è®¤åªåœ¨å­ä»£ä¸­ç­›é€‰,æœ‰è½´æ—¶ç”±è½´å®šä¹‰ç­›é€‰åŸŸ
-        RECURSIVE("//"), // å‘ä¸‹é€’å½’æŸ¥æ‰¾
-        CUR("./"), // å½“å‰èŠ‚ç‚¹ä¸‹
-        CURREC(".//"); // å½“å‰èŠ‚ç‚¹å‘ä¸‹é€’å½’
+        INCHILREN("/"), // Ä¬ÈÏÖ»ÔÚ×Ó´úÖĞÉ¸Ñ¡,ÓĞÖáÊ±ÓÉÖá¶¨ÒåÉ¸Ñ¡Óò
+        RECURSIVE("//"), // ÏòÏÂµİ¹é²éÕÒ
+        CUR("./"), // µ±Ç°½ÚµãÏÂ
+        CURREC(".//"); // µ±Ç°½ÚµãÏòÏÂµİ¹é
         private String val;
 
         ScopeEm(String type) {
@@ -26,7 +26,7 @@ public class XpathNode {
     }
 
     /**
-     * æŸ¥æ‰¾æ–¹å‘,
+     * ²éÕÒ·½Ïò,
      */
     private ScopeEm scopeEm;
 
@@ -39,7 +39,7 @@ public class XpathNode {
     }
 
     /**
-     * è½´
+     * Öá
      */
     private AxisFunction axis;
 
@@ -62,7 +62,7 @@ public class XpathNode {
     }
 
     /**
-     * è°“è¯­
+     * Î½Óï
      */
 
     private LinkedList<Predicate> predicates = new LinkedList<>();

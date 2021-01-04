@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TextFunction implements SelectFunction {
     /**
-     * åªè·å–èŠ‚ç‚¹è‡ªèº«çš„å­æ–‡æœ¬
+     * Ö»»ñÈ¡½Úµã×ÔÉíµÄ×ÓÎÄ±¾
      */
     @Override
     public XNodes call(XpathNode.ScopeEm scopeEm, ViewImages elements, List<String> args) {

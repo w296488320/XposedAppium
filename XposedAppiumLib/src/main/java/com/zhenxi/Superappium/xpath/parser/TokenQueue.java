@@ -184,7 +184,7 @@ public class TokenQueue {
         }
 
         int start = pos + 1;
-        for (; start < queue.length(); start++) {// xpath的函数名称里面,允许有 "-"
+        for (; start < queue.length(); start++) {// xpath的函数名称里面允许有"-"
             if (Character.isLetterOrDigit(queue.charAt(start)) || queue.charAt(start) == '-') {
                 continue;
             }

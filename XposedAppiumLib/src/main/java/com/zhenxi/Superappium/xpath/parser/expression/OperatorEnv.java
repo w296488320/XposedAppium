@@ -96,7 +96,7 @@ public class OperatorEnv {
 
     public static int judgePriority(String operatorName) {
         if ("#".equals(operatorName)) {
-            // è¿™æ˜¯ä¸€ä¸ªç‰¹æ®Šé€»è¾‘,è¿ç®—æ ˆéœ€è¦æœ‰ä¸€ä¸ªå…œåº•åˆ¤æ–­çš„æ“ä½œç¬¦,æ‰€ä»¥#æ˜¯RPNé»˜è®¤çš„ä¸€ä¸ªè¿ç®—ç¬¦,ä½†æ˜¯ä»–ä¸ä¼šè¡¨ç°åœ¨ç¼–è¯‘å¥½çš„è¯­æ³•æ ‘é‡Œé¢
+            // ÕâÊÇÒ»¸öÌØÊâÂß¼­,ÔËËãÕ»ĞèÒªÓĞÒ»¸ö¶µµ×ÅĞ¶ÏµÄ²Ù×÷·û,ËùÒÔ#ÊÇRPNÄ¬ÈÏµÄÒ»¸öÔËËã·û,µ«ÊÇËû²»»á±íÏÖÔÚ±àÒëºÃµÄÓï·¨Ê÷ÀïÃæ
             return Integer.MIN_VALUE;
         }
         AlgorithmHolder holder = operatorMaps.get(operatorName);

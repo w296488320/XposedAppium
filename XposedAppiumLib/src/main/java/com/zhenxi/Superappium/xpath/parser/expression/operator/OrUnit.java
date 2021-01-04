@@ -12,12 +12,12 @@ public class OrUnit extends AlgorithmUnit {
     public Object calc(ViewImage element) {
         Object leftValue = left.calc(element);
         Object rightValue = right.calc(element);
-        // å·¦è¾¹ä¸ºtrue,å³è¾¹ä¸ç®¡æ˜¯å•¥,éƒ½ä¸ºçœŸ
+        // ×ó±ßÎªtrue,ÓÒ±ß²»¹ÜÊÇÉ¶,¶¼ÎªÕæ
         if (leftValue != null && leftValue instanceof Boolean && (Boolean) leftValue) {
             return true;
         }
 
-        // å·¦è¾¹ä¸ä¸ºçœŸ,ä»¥å³è¾¹ä¸ºä¸»
+        // ×ó±ß²»ÎªÕæ,ÒÔÓÒ±ßÎªÖ÷
         if (rightValue != null && rightValue instanceof Boolean && (Boolean) rightValue) {
             return true;
         }

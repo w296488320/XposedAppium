@@ -27,10 +27,10 @@ public class XpathParser {
     }
 
     /**
-     * no errorä»£è¡¨è°ƒç”¨æ”¾æ˜ç¡®çŸ¥é“xpathæ²¡æœ‰è¯­æ³•é”™è¯¯,ä¸»åŠ¨æ”¾å¼ƒæ£€æŸ¥,æ˜¯ä¸€ä¸ªæ–¹ä¾¿çš„æ–¹æ³•,ä½†æ˜¯å¦‚æœè¡¨è¾¾å¼ç¡®å®æœ‰è¯­æ³•é”™è¯¯,æœ¬æ–¹æ³•è·‘å‡ºéæ³•çŠ¶æ€å¼‚å¸¸
+     * no error´ú±íµ÷ÓÃ·ÅÃ÷È·ÖªµÀxpathÃ»ÓĞÓï·¨´íÎó,Ö÷¶¯·ÅÆú¼ì²é,ÊÇÒ»¸ö·½±ãµÄ·½·¨,µ«ÊÇÈç¹û±í´ïÊ½È·ÊµÓĞÓï·¨´íÎó,±¾·½·¨ÅÜ³ö·Ç·¨×´Ì¬Òì³£
      *
-     * @param xpathStr xpathè¡¨è¾¾å¼
-     * @return ç”±æ¨¡å‹æè¿°çš„xpathæŠ½å–å™¨
+     * @param xpathStr xpath±í´ïÊ½
+     * @return ÓÉÄ£ĞÍÃèÊöµÄxpath³éÈ¡Æ÷
      */
     public static XpathEvaluator compileNoError(String xpathStr) {
         try {

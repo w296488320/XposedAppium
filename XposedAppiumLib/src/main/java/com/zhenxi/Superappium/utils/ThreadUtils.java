@@ -11,14 +11,14 @@ import java.util.concurrent.Executors;
  */
 
 public class ThreadUtils {
-    //ä½¿ç”¨ä¸»çº¿ç¨‹çš„looperåˆ›å»ºhandler è¿™ä¸ªhandlerä¸€å®šæ‰§è¡Œåœ¨ä¸»çº¿ç¨‹çš„
-    public static Handler handler = new Handler(Looper.getMainLooper());
+    //Ê¹ÓÃÖ÷Ïß³ÌµÄlooper´´½¨handler Õâ¸öhandlerÒ»¶¨Ö´ĞĞÔÚÖ÷Ïß³ÌµÄ
+    public static final Handler handler = new Handler(Looper.getMainLooper());
 
-    //å•çº¿ç¨‹çš„çº¿ç¨‹æ± 
+    //µ¥Ïß³ÌµÄÏß³Ì³Ø
     private static Executor executor = Executors.newSingleThreadExecutor();
 
     /**
-     * åœ¨å­çº¿ç¨‹ä¸­æ‰§è¡Œä»£ç 
+     * ÔÚ×ÓÏß³ÌÖĞÖ´ĞĞ´úÂë
      *
      * @param r
      */
@@ -27,7 +27,7 @@ public class ThreadUtils {
     }
 
     /**
-     * åœ¨ä¸»çº¿ç¨‹ä¸­æ‰§è¡Œä»£ç 
+     * ÔÚÖ÷Ïß³ÌÖĞÖ´ĞĞ´úÂë
      *
      * @param r
      */

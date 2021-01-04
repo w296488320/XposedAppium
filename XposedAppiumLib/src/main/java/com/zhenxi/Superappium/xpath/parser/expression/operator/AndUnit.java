@@ -15,7 +15,7 @@ public class AndUnit extends AlgorithmUnit {
         if (leftValue == null || rightValue == null) {
             return Boolean.FALSE;
         }
-        // å·¦å³éƒ½ä¸ä¸ºç©º,å¼€å§‹è®¡ç®—
+        // ×óÓÒ¶¼²»Îª¿Õ,¿ªÊ¼¼ÆËã
         // step one think as number
         if (leftValue instanceof Boolean && rightValue instanceof Boolean) {
             return (Boolean) leftValue && (Boolean) rightValue;

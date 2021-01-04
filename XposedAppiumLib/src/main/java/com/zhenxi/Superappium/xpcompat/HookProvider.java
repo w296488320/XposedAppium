@@ -3,8 +3,8 @@ package com.zhenxi.Superappium.xpcompat;
 import java.lang.reflect.Member;
 
 /**
- * xp 鍏煎灞傦紝鐢变簬寰堝鐢ㄦ埛鏈墄p鐨勫畾鍒讹紝瀵艰嚧api鍙兘鏃犳硶鐩存帴鍦▁p涓婇潰浣跨敤<br>
- * 鎵�浠ヨ繖閲屽仛涓�灞傛娊璞★紝閫氳繃杩欏眰璺敱鐩存帴瀵规帴鍚勭xp like鏂规
+ * xp 兼容层，由于很多用户有xp的定制，导致api可能无法直接在xp上面使用<br>
+ * 所以这里做一层抽象，通过这层路由直接对接各种xp like方案
  */
 public interface HookProvider {
     void hookMethod(Member method, CompatMethodHook compatMethodHook);

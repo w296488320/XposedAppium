@@ -16,7 +16,7 @@ public class LessThanUnit extends AlgorithmUnit {
         if (leftValue == null || rightValue == null) {
             return XpathUtil.toPlainString(rightValue).compareTo(XpathUtil.toPlainString(rightValue)) < 0;
         }
-        // å·¦å³éƒ½ä¸ä¸ºç©º,å¼€å§‹è®¡ç®—
+        // ×óÓÒ¶¼²»Îª¿Õ,¿ªÊ¼¼ÆËã
         // step one think as number
         if (leftValue instanceof Number && rightValue instanceof Number) {
             return ((Number) leftValue).doubleValue() < ((Number) rightValue).doubleValue();

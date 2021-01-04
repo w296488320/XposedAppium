@@ -27,7 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * è·å–å½“å‰Viewçš„åŸºç±»ç±»å‹
+ * »ñÈ¡µ±Ç°ViewµÄ»ùÀàÀàĞÍ
  */
 public class BaseViewTypeGetter implements ValueGetter {
     @Override

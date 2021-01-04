@@ -1,6 +1,5 @@
 package com.zhenxi.Superappium.xpcompat;
 
-import com.zhenxi.Superappium.xpcompat.providers.RatelBridgeProvider;
 import com.zhenxi.Superappium.xpcompat.providers.XposedBridgeProvider;
 
 import java.lang.reflect.Member;
@@ -37,7 +36,8 @@ public class XpCompatEngine {
 
         try {
             Class.forName("de.robv.android.xposed.XposedBridge");
-            // é»˜è®¤æ”¯æŒåœ¨ xpç¯å¢ƒä¸‹è¿è¡Œï¼Œå¦‚æœæœ‰è‡ªå®šä¹‰hookæ¡†æ¶ï¼Œé‚£ä¹ˆéœ€è¦å®ç° com.zhenxi.Superappium.xpcompat.HookProvider
+            // Ä¬ÈÏÖ§³ÖÔÚ xp»·¾³ÏÂÔËĞĞ£¬Èç¹ûÓĞ×Ô¶¨Òåhook¿ò¼Ü£¬ÄÇÃ´ĞèÒªÊµÏÖ
+            // com.zhenxi.Superappium.xpcompat.HookProvider
             sHookProvider = new XposedBridgeProvider();
             return sHookProvider;
         } catch (Throwable throwable) {
@@ -45,14 +45,16 @@ public class XpCompatEngine {
         }
 
         //com.virjar.ratel.api.rposed.RposedBridge
-        try {
-            Class.forName("com.virjar.ratel.api.rposed.RposedBridge");
-            //å¦‚æœè¿è¡Œåœ¨å¹³å¤´å“¥æ¡†æ¶ä¸‹ï¼Œé‚£ä¹ˆè‡ªåŠ¨è·¯ç”±åˆ°å¹³å¤´å“¥
-            sHookProvider = new RatelBridgeProvider();
-            return sHookProvider;
-        } catch (Throwable throwable) {
-            //ignore
-        }
+//        try {
+//            Class.forName("com.virjar.ratel.api.rposed.RposedBridge");
+//            //Èç¹ûÔËĞĞÔÚÆ½Í·¸ç¿ò¼ÜÏÂ£¬ÄÇÃ´×Ô¶¯Â·ÓÉµ½Æ½Í·¸ç
+//            sHookProvider = new RatelBridgeProvider();
+//            return sHookProvider;
+//        } catch (Throwable throwable) {
+//            //ignore
+//        }
+        //¿ÉÒÔÔÚÏÂÃæÌí¼Ó×Ô¼ºµÄÊµÏÖ
+
         throw new IllegalStateException("no hook provider setup, and not running xposed environment");
     }
 }

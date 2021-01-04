@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * Created by virjar on 17/6/10.
  *
  * @author virjar
- * @since 0.0.1 é™¤æ³•è¿ç®—
+ * @since 0.0.1 ³ı·¨ÔËËã
  */
 @OpKey(value = "/", priority = 30)
 public class DivideUnit extends AlgorithmUnit {
@@ -25,24 +25,24 @@ public class DivideUnit extends AlgorithmUnit {
         if (leftValue == null || rightValue == null) {
             throw new EvaluateException("operate is null,left: " + leftValue + "  right:" + rightValue);
         }
-        // å·¦å³éƒ½ä¸ä¸ºç©º,å¼€å§‹è®¡ç®—
+        // ×óÓÒ¶¼²»Îª¿Õ,¿ªÊ¼¼ÆËã
         // step one think as number
         if (leftValue instanceof Number && rightValue instanceof Number) {
-            // éƒ½æ˜¯æ•´æ•°,åˆ™æ‰§è¡Œæ•´æ•°é™¤æ³•
+            // ¶¼ÊÇÕûÊı,ÔòÖ´ĞĞÕûÊı³ı·¨
             if (leftValue instanceof Integer && rightValue instanceof Integer) {
                 return (Integer) leftValue / (Integer) rightValue;
             }
 
-            // åŒ…å«å°æ•°,è½¬doubleæ‰§è¡Œé™¤æ³•
+            // °üº¬Ğ¡Êı,×ªdoubleÖ´ĞĞ³ı·¨
             if (leftValue instanceof Double || rightValue instanceof Double || leftValue instanceof Float
                     || rightValue instanceof Float) {
                 return ((Number) leftValue).doubleValue() / ((Number) rightValue).doubleValue();
             }
 
-            // åŒ…å«BigDecimal è½¬bigDecimal
+            // °üº¬BigDecimal ×ªbigDecimal
             if (leftValue instanceof BigDecimal || rightValue instanceof BigDecimal) {
                 if (leftValue instanceof BigDecimal && rightValue instanceof BigDecimal) {
-                    return ((BigDecimal) leftValue).divide((BigDecimal) rightValue, BigDecimal.ROUND_HALF_UP);// é»˜è®¤å››èˆäº”å…¥
+                    return ((BigDecimal) leftValue).divide((BigDecimal) rightValue, BigDecimal.ROUND_HALF_UP);// Ä¬ÈÏËÄÉáÎåÈë
                 }
 
                 BigDecimal newLeft = XpathUtil.toBigDecimal((Number) leftValue);
@@ -50,12 +50,12 @@ public class DivideUnit extends AlgorithmUnit {
                 return newLeft.divide(newRight, BigDecimal.ROUND_HALF_UP);
             }
 
-            // åŒ…å«é•¿æ•´æ•°,ä¸”ä¸åŒ…å«å°æ•°,å…¨éƒ¨è½¬åŒ–ä¸ºé•¿æ•´æ•°è®¡ç®—
+            // °üº¬³¤ÕûÊı,ÇÒ²»°üº¬Ğ¡Êı,È«²¿×ª»¯Îª³¤ÕûÊı¼ÆËã
             if (leftValue instanceof Long || rightValue instanceof Long) {
                 return ((Number) leftValue).longValue() / ((Number) rightValue).longValue();
             }
 
-            // å…œåº•,ç”¨doubleæ‰§è¡Œè®¡ç®—
+            // ¶µµ×,ÓÃdoubleÖ´ĞĞ¼ÆËã
             return ((Number) leftValue).doubleValue() / ((Number) rightValue).doubleValue();
         }
 

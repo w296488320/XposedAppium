@@ -18,7 +18,7 @@ public class TagSelectFunction implements SelectFunction {
         String tagName = args.get(0);
         List<ViewImage> temp = new LinkedList<>();
 
-        if (scopeEm == XpathNode.ScopeEm.RECURSIVE || scopeEm == XpathNode.ScopeEm.CURREC) {// é€’å½’æ¨¡å¼
+        if (scopeEm == XpathNode.ScopeEm.RECURSIVE || scopeEm == XpathNode.ScopeEm.CURREC) {// µİ¹éÄ£Ê½
             Evaluator evaluator;
             if ("*".equals(tagName)) {
                 evaluator = new Evaluator.AllElements();
@@ -29,14 +29,14 @@ public class TagSelectFunction implements SelectFunction {
                 temp.addAll(Collector.collect(evaluator, element));
             }
             if (scopeEm == XpathNode.ScopeEm.RECURSIVE) {
-                //å‘ä¸‹é€’å½’,ä¸åº”è¯¥åŒ…å«è‡ªèº«
+                //ÏòÏÂµİ¹é,²»Ó¦¸Ã°üº¬×ÔÉí
                 temp.removeAll(elements);
             }
 
             return XpathUtil.transform(temp);
         }
 
-        // ç›´æ¥å­ä»£æŸ¥æ‰¾
+        // Ö±½Ó×Ó´ú²éÕÒ
         if ("*".equals(tagName)) {
             for (ViewImage element : elements) {
                 temp.addAll(element.children());

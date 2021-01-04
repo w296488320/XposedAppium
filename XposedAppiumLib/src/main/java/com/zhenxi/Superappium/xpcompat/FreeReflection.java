@@ -7,10 +7,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * ratelEngine 1.3.2ä¹‹åï¼Œå°†ä¼šå–æ¶ˆ hidden policy bypassï¼Œæ­¤æ—¶RposedHelperçš„åå°„æ“ä½œå¯èƒ½ä¼šè¢«é˜»æ–­ã€‚
- * æä¾›è¿™ä¸ªå¸®åŠ©ç±»ï¼Œå¯ä»¥å®ç°hidden policyçš„ç»•è¿‡
+ * ratelEngine 1.3.2Ö®ºó£¬½«»áÈ¡Ïû hidden policy bypass£¬´ËÊ±RposedHelperµÄ·´Éä²Ù×÷¿ÉÄÜ»á±»×è¶Ï¡£
+ * Ìá¹©Õâ¸ö°ïÖúÀà£¬¿ÉÒÔÊµÏÖhidden policyµÄÈÆ¹ı
  * <p>
- * è¿™ä¸ªé™åˆ¶åœ¨android9(api level = 28)ä¹‹åæ‰ä¼šå‡ºç°
+ * Õâ¸öÏŞÖÆÔÚandroid9(api level = 28)Ö®ºó²Å»á³öÏÖ
  */
 public class FreeReflection {
     private static Method getMethodMethod = null;

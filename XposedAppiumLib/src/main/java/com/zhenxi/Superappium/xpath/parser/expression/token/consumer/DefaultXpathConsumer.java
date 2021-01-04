@@ -21,7 +21,7 @@ public class DefaultXpathConsumer implements TokenConsumer {
         } catch (XpathSyntaxErrorException e) {
             // log.debug("exception when compile xpath:{}", s, e);
             // TODO
-            // ignore,æ ¹æ®çº¦å®š,å¦‚æœå‘ç”Ÿå¼‚å¸¸,åˆ™å¿½ç•¥æœ¬æ¬¡è°ƒç”¨
+            // ignore,¸ù¾İÔ¼¶¨,Èç¹û·¢ÉúÒì³£,ÔòºöÂÔ±¾´Îµ÷ÓÃ
             return null;
         }
     }

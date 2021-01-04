@@ -5,7 +5,7 @@ import com.zhenxi.Superappium.ViewImage;
 import java.util.List;
 
 /**
- * å…¨éƒ¨å­ä»£èŠ‚ç‚¹ å„¿å­ï¼Œå­™å­ï¼Œå­™å­çš„å„¿å­...
+ * È«²¿×Ó´ú½Úµã ¶ù×Ó£¬Ëï×Ó£¬Ëï×ÓµÄ¶ù×Ó...
  */
 public class DescendantFunction implements AxisFunction {
     @Override

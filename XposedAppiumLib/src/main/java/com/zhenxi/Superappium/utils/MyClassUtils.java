@@ -9,10 +9,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import external.org.apache.commons.lang3.ArrayUtils;
-import external.org.apache.commons.lang3.JavaVersion;
-import external.org.apache.commons.lang3.StringUtils;
-import external.org.apache.commons.lang3.SystemUtils;
+import static android.text.TextUtils.isEmpty;
+
+//import external.org.apache.commons.lang3.ArrayUtils;
+//import JavaVersion;
+//import external.org.apache.commons.lang3.StringUtils;
+//import external.org.apache.commons.lang3.SystemUtils;
 
 /**
  * @author Zhenxi on 2020-09-03
@@ -132,7 +134,7 @@ public class MyClassUtils {
      */
     public static String getShortClassName(Class<?> cls) {
         if (cls == null) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
         return getShortClassName(cls.getName());
     }
@@ -151,10 +153,10 @@ public class MyClassUtils {
      */
     public static String getShortClassName(String className) {
         if (className == null) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
         if (className.length() == 0) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
 
         StringBuilder arrayPrefix = new StringBuilder();
@@ -195,7 +197,7 @@ public class MyClassUtils {
      */
     public static String getSimpleName(Class<?> cls) {
         if (cls == null) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
         return cls.getSimpleName();
     }
@@ -240,7 +242,7 @@ public class MyClassUtils {
      */
     public static String getPackageName(Class<?> cls) {
         if (cls == null) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
         return getPackageName(cls.getName());
     }
@@ -256,7 +258,7 @@ public class MyClassUtils {
      */
     public static String getPackageName(String className) {
         if (className == null || className.length() == 0) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
 
         // Strip array encoding
@@ -270,7 +272,7 @@ public class MyClassUtils {
 
         int i = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);
         if (i == -1) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
         return className.substring(0, i);
     }
@@ -439,6 +441,30 @@ public class MyClassUtils {
         return isAssignable(classArray, toClassArray, SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_5));
     }
 
+
+
+    public static final Class<?>[] EMPTY_CLASS_ARRAY = new Class[0];
+    // Is same length
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Checks whether two arrays are the same length, treating
+     * {@code null} arrays as length {@code 0}.
+     *
+     * <p>Any multi-dimensional aspects of the arrays are ignored.</p>
+     *
+     * @param array1 the first array, may be {@code null}
+     * @param array2 the second array, may be {@code null}
+     * @return {@code true} if length of arrays matches, treating
+     *  {@code null} as an empty array
+     */
+    public static boolean isSameLength(Object[] array1, Object[] array2) {
+        if ((array1 == null && array2 != null && array2.length > 0) ||
+                (array2 == null && array1 != null && array1.length > 0) ||
+                (array1 != null && array2 != null && array1.length != array2.length)) {
+            return false;
+        }
+        return true;
+    }
     /**
      * <p>Checks if an array of Classes can be assigned to another array of Classes.</p>
      *
@@ -472,14 +498,14 @@ public class MyClassUtils {
      * @return {@code true} if assignment possible
      */
     public static boolean isAssignable(Class<?>[] classArray, Class<?>[] toClassArray, boolean autoboxing) {
-        if (ArrayUtils.isSameLength(classArray, toClassArray) == false) {
+        if (isSameLength(classArray, toClassArray) == false) {
             return false;
         }
         if (classArray == null) {
-            classArray = ArrayUtils.EMPTY_CLASS_ARRAY;
+            classArray = EMPTY_CLASS_ARRAY;
         }
         if (toClassArray == null) {
-            toClassArray = ArrayUtils.EMPTY_CLASS_ARRAY;
+            toClassArray = EMPTY_CLASS_ARRAY;
         }
         for (int i = 0; i < classArray.length; i++) {
             if (isAssignable(classArray[i], toClassArray[i], autoboxing) == false) {
@@ -855,59 +881,39 @@ public class MyClassUtils {
         return getClass(loader, className, initialize);
     }
 
-    // Public method
-    // ----------------------------------------------------------------------
+
     /**
-     * <p>Returns the desired Method much like {@code Class.getMethod}, however
-     * it ensures that the returned Method is from a public class or interface and not
-     * from an anonymous inner class. This means that the Method is invokable and
-     * doesn't fall foul of Java bug
-     * <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4071957">4071957</a>).
-     *
-     *  <code><pre>Set set = Collections.unmodifiableSet(...);
-     *  Method method = ClassUtils.getPublicMethod(set.getClass(), "isEmpty",  new Class[0]);
-     *  Object result = method.invoke(set, new Object[]);</pre></code>
+     * <p>Deletes all whitespaces from a String as defined by
+     * {@link Character#isWhitespace(char)}.
      * </p>
+     * <pre>
+     * StringUtils.deleteWhitespace(null)         = null
+     * StringUtils.deleteWhitespace("")           = ""
+     * StringUtils.deleteWhitespace("abc")        = "abc"
+     * StringUtils.deleteWhitespace("   ab  c  ") = "abc"
+     * </pre>
      *
-     * @param cls  the class to check, not null
-     * @param methodName  the name of the method
-     * @param parameterTypes  the list of parameters
-     * @return the method
-     * @throws NullPointerException if the class is null
-     * @throws SecurityException if a a security violation occured
-     * @throws NoSuchMethodException if the method is not found in the given class
-     *  or if the metothod doen't conform with the requirements
+     * @param str the String to delete whitespace from, may be null
+     * @return the String without whitespaces, {@code null} if null String input
      */
-    public static Method getPublicMethod(Class<?> cls, String methodName, Class<?>... parameterTypes)
-            throws SecurityException, NoSuchMethodException {
-
-        Method declaredMethod = cls.getMethod(methodName, parameterTypes);
-        if (Modifier.isPublic(declaredMethod.getDeclaringClass().getModifiers())) {
-            return declaredMethod;
+    public static String deleteWhitespace(final String str) {
+        if (isEmpty(str)) {
+            return str;
         }
-
-        List<Class<?>> candidateClasses = new ArrayList<Class<?>>();
-        candidateClasses.addAll(getAllInterfaces(cls));
-        candidateClasses.addAll(getAllSuperclasses(cls));
-
-        for (Class<?> candidateClass : candidateClasses) {
-            if (!Modifier.isPublic(candidateClass.getModifiers())) {
-                continue;
-            }
-            Method candidateMethod;
-            try {
-                candidateMethod = candidateClass.getMethod(methodName, parameterTypes);
-            } catch (NoSuchMethodException ex) {
-                continue;
-            }
-            if (Modifier.isPublic(candidateMethod.getDeclaringClass().getModifiers())) {
-                return candidateMethod;
+        final int sz = str.length();
+        final char[] chs = new char[sz];
+        int count = 0;
+        for (int i = 0; i < sz; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                chs[count++] = str.charAt(i);
             }
         }
-
-        throw new NoSuchMethodException("Can't find a public method for " +
-                methodName + " " + ArrayUtils.toString(parameterTypes));
+        if (count == sz) {
+            return str;
+        }
+        return new String(chs, 0, count);
     }
+
 
     // ----------------------------------------------------------------------
     /**
@@ -917,7 +923,7 @@ public class MyClassUtils {
      * @return the converted name
      */
     private static String toCanonicalName(String className) {
-        className = external.org.apache.commons.lang3.StringUtils.deleteWhitespace(className);
+        className = deleteWhitespace(className);
         if (className == null) {
             throw new NullPointerException("className must not be null.");
         } else if (className.endsWith("[]")) {
@@ -937,6 +943,7 @@ public class MyClassUtils {
         return className;
     }
 
+
     /**
      * <p>Converts an array of {@code Object} in to an array of {@code Class} objects.
      * If any of these objects is null, a null element will be inserted into the array.</p>
@@ -951,7 +958,7 @@ public class MyClassUtils {
         if (array == null) {
             return null;
         } else if (array.length == 0) {
-            return ArrayUtils.EMPTY_CLASS_ARRAY;
+            return EMPTY_CLASS_ARRAY;
         }
         Class<?>[] classes = new Class[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -986,7 +993,7 @@ public class MyClassUtils {
      */
     public static String getShortCanonicalName(Class<?> cls) {
         if (cls == null) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
         return getShortCanonicalName(cls.getName());
     }
@@ -1030,7 +1037,7 @@ public class MyClassUtils {
      */
     public static String getPackageCanonicalName(Class<?> cls) {
         if (cls == null) {
-            return external.org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
         return getPackageCanonicalName(cls.getName());
     }
@@ -1066,7 +1073,7 @@ public class MyClassUtils {
      * @since 2.4
      */
     private static String getCanonicalName(String className) {
-        className = StringUtils.deleteWhitespace(className);
+        className = deleteWhitespace(className);
         if (className == null) {
             return null;
         } else {

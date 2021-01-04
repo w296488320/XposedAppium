@@ -25,7 +25,7 @@ public class XpathStateMachine {
     private static Map<String, XpathNode.ScopeEm> scopeEmMap = new HashMap<>();
 
 
-    // æ³¨æ„é¡ºåº,è¿™é¡ºåºä¸èƒ½ä¹±
+    // ×¢ÒâË³Ğò,ÕâË³Ğò²»ÄÜÂÒ
     private static List<String> scopeList = new ArrayList<>(); //Lists.newArrayList("//", "/", ".//", "./");
 
     static {
@@ -62,14 +62,14 @@ public class XpathStateMachine {
 
     public enum BuilderState {
 
-        // è§£æèµ·å§‹
+        // ½âÎöÆğÊ¼
         SCOPE {
             @Override
             public void parse(XpathStateMachine stateMachine) throws XpathSyntaxErrorException {
-                stateMachine.tokenQueue.consumeWhitespace();// æ¶ˆé™¤ç©ºç™½å­—ç¬¦
+                stateMachine.tokenQueue.consumeWhitespace();// Ïû³ı¿Õ°××Ö·û
                 char xpathFlag = '`';
                 if (stateMachine.tokenQueue.matchesAny(xpathFlag, '(')) {
-                    // è·å–ä¸€ä¸ªå­ä¸²,å¤„ç†é€’å½’,è½¬ä¹‰,å¼•å·é—®é¢˜
+                    // »ñÈ¡Ò»¸ö×Ó´®,´¦Àíµİ¹é,×ªÒå,ÒıºÅÎÊÌâ
 
                     String subXpath;
                     if (stateMachine.tokenQueue.matchesAny(xpathFlag)) {
@@ -81,7 +81,7 @@ public class XpathStateMachine {
                         throw new XpathSyntaxErrorException(0, "\"()\" empty sub xpath fond");
                     }
                     // subXpath = TokenQueue.unescape(subXpath);
-                    // TODO è€ƒè™‘æ˜¯å¦æŠ¹æ‰è½¬ä¹‰
+                    // TODO ¿¼ÂÇÊÇ·ñÄ¨µô×ªÒå
                     XpathEvaluator subTree = new XpathParser(subXpath).parse();
                     stateMachine.evaluator = stateMachine.evaluator.wrap(subTree);
                     return;
@@ -139,10 +139,10 @@ public class XpathStateMachine {
         AXIS {
             @Override
             public void parse(XpathStateMachine stateMachine) throws XpathSyntaxErrorException {
-                // è½´è§£æ
+                // Öá½âÎö
                 if (!stateMachine.tokenQueue.hasAxis()) {
                     if (stateMachine.tokenQueue.matchesAny("..", ".")) {
-                        //ç‰¹æ®Šé€»è¾‘,æ±‚å½“å‰èŠ‚ç‚¹å’Œçˆ¶èŠ‚ç‚¹çš„è¯,è½¬åŒ–ä¸ºä¸€ä¸ªè½´å‡½æ•°
+                        //ÌØÊâÂß¼­,Çóµ±Ç°½ÚµãºÍ¸¸½ÚµãµÄ»°,×ª»¯ÎªÒ»¸öÖáº¯Êı
                         String axisFunctionName;
                         if (stateMachine.tokenQueue.matches("..")) {
                             stateMachine.tokenQueue.consume("..");
@@ -178,8 +178,8 @@ public class XpathStateMachine {
                     return;
                 }
 
-                // å¸¦æœ‰å‚æ•°çš„è½´å‡½æ•°
-                if (!functionTokenQueue.matches("(")) {// å¿…é¡»ä»¥æ‹¬å·å¼€å¤´
+                // ´øÓĞ²ÎÊıµÄÖáº¯Êı
+                if (!functionTokenQueue.matches("(")) {// ±ØĞëÒÔÀ¨ºÅ¿ªÍ·
                     throw new XpathSyntaxErrorException(stateMachine.tokenQueue.nowPosition(),
                             "expression is not a function:\"" + axisFunctionStr + "\"");
                 }
@@ -191,7 +191,7 @@ public class XpathStateMachine {
                                     + functionTokenQueue.remainder());
                 }
 
-                // è§£æå‚æ•°åˆ—è¡¨
+                // ½âÎö²ÎÊıÁĞ±í
                 TokenQueue paramTokenQueue = new TokenQueue(paramList);
                 LinkedList<String> params = new LinkedList<>();
                 while (!paramTokenQueue.isEmpty()) {
@@ -237,7 +237,7 @@ public class XpathStateMachine {
                     return;
                 }
 
-                if (stateMachine.tokenQueue.matchesFunction()) {// é‡åˆ°ä¸»å¹²æŠ½å–å‡½æ•°,åé¢ä¸èƒ½æœ‰è°“è¯­
+                if (stateMachine.tokenQueue.matchesFunction()) {// Óöµ½Ö÷¸É³éÈ¡º¯Êı,ºóÃæ²»ÄÜÓĞÎ½Óï
                     String function = stateMachine.tokenQueue.consumeFunction();
                     TokenQueue functionTokenQueue = new TokenQueue(function);
                     String functionName = functionTokenQueue.consumeTo("(");
@@ -264,10 +264,10 @@ public class XpathStateMachine {
                     stateMachine.xpathChain.getLast()
                             .setSelectFunction(FunctionEnv.getSelectFunction(functionName));
                     stateMachine.xpathChain.getLast().setSelectParams(params);
-                    stateMachine.state = PREDICATE;// TODO åé¢æ˜¯å¦æ”¯æŒè°“è¯­,å¦‚æœæ”¯æŒçš„è¯,è°“è¯­æ•°æ®ç»“æ„éœ€è¦ä¿®æ”¹
+                    stateMachine.state = PREDICATE;// TODO ºóÃæÊÇ·ñÖ§³ÖÎ½Óï,Èç¹ûÖ§³ÖµÄ»°,Î½ÓïÊı¾İ½á¹¹ĞèÒªĞŞ¸Ä
                     return;
                 }
-                if (stateMachine.tokenQueue.matches("@")) {// é‡åˆ°å±æ€§æŠ½å–åŠ¨ä½œ
+                if (stateMachine.tokenQueue.matches("@")) {// Óöµ½ÊôĞÔ³éÈ¡¶¯×÷
                     stateMachine.tokenQueue.advance();
                     stateMachine.tokenQueue.consumeWhitespace();
                     stateMachine.xpathChain.getLast()
@@ -303,7 +303,7 @@ public class XpathStateMachine {
                 stateMachine.tokenQueue.consumeWhitespace();
 
                 if (stateMachine.tokenQueue.matches("[")) {
-                    // è°“è¯­ä¸²
+                    // Î½Óï´®
                     String predicate = stateMachine.tokenQueue.chompBalanced('[', ']');
                     SyntaxNode predicateTree = new ExpressionParser(new TokenQueue(predicate)).parse();
                     stateMachine.xpathChain.getLast()

@@ -21,7 +21,7 @@ public class HiddenAPIEnforcementPolicyUtils {
 
     private static void init() {
         try {
-            //å…ˆåå°„fornameæ–¹æ³•åˆ©ç”¨ç³»ç»Ÿçº§æƒé™ç›´æ¥æ‹¿åˆ° VMRuntime
+            //ÏÈ·´Éäforname·½·¨ÀûÓÃÏµÍ³¼¶È¨ÏŞÖ±½ÓÄÃµ½ VMRuntime
             Method getMethodMethod = Class.class.getDeclaredMethod("getDeclaredMethod", String.class, Class[].class);
             Method forNameMethod = Class.class.getDeclaredMethod("forName", String.class);
             Class vmRuntimeClass = (Class) forNameMethod.invoke(null, "dalvik.system.VMRuntime");
@@ -36,7 +36,7 @@ public class HiddenAPIEnforcementPolicyUtils {
 
 
     public static void passApiCheck() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT < 29) {
             return;
         }
         if (!hasInit) {
@@ -57,14 +57,14 @@ public class HiddenAPIEnforcementPolicyUtils {
     }
 
     public static void reverseApiCheck() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT < 29) {
             return;
         }
         if (!hasInit) {
             init();
         }
         try {
-            //åªä¿ç•™java.lang.* é¿å…apké€šè¿‡hidden api policyè¿›è¡Œæ£€æµ‹
+            //Ö»±£Áôjava.lang.* ±ÜÃâapkÍ¨¹ıhidden api policy½øĞĞ¼ì²â
             addReflectionWhiteList("Ljava/lang/");
         } catch (Throwable throwable) {
             Log.e(SuperAppium.TAG, "reverseApiCheck failed", throwable);

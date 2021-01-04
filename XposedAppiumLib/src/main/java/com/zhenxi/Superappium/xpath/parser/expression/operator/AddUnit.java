@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Created by virjar on 17/6/10.
  *
  * @author virjar
- * @since 0.0.1 åŠ æ³•è¿ç®—
+ * @since 0.0.1 ¼Ó·¨ÔËËã
  */
 @OpKey(value = "+", priority = 20)
 public class AddUnit extends AlgorithmUnit {
@@ -23,35 +23,35 @@ public class AddUnit extends AlgorithmUnit {
         if (leftValue == null || rightValue == null) {
             return XpathUtil.toPlainString(leftValue) + XpathUtil.toPlainString(rightValue);
         }
-        // å·¦å³éƒ½ä¸ä¸ºç©º,å¼€å§‹è®¡ç®—
+        // ×óÓÒ¶¼²»Îª¿Õ,¿ªÊ¼¼ÆËã
         // step one think as number
         if (leftValue instanceof Number && rightValue instanceof Number) {
-            // éƒ½æ˜¯æ•´æ•°,åˆ™æ‰§è¡Œæ•´æ•°åŠ æ³•
+            // ¶¼ÊÇÕûÊı,ÔòÖ´ĞĞÕûÊı¼Ó·¨
             if (leftValue instanceof Integer && rightValue instanceof Integer) {
                 return (Integer) leftValue + (Integer) rightValue;
             }
 
-            // åŒ…å«å°æ•°,è½¬doubleæ‰§è¡ŒåŠ æ³•
+            // °üº¬Ğ¡Êı,×ªdoubleÖ´ĞĞ¼Ó·¨
             if (leftValue instanceof Double || rightValue instanceof Double || leftValue instanceof Float
                     || rightValue instanceof Float) {
                 return ((Number) leftValue).doubleValue() + ((Number) rightValue).doubleValue();
             }
 
-            // åŒ…å«BigDecimal è½¬bigDecimal
+            // °üº¬BigDecimal ×ªbigDecimal
             if (leftValue instanceof BigDecimal || rightValue instanceof BigDecimal) {
                 return XpathUtil.toBigDecimal((Number) leftValue).add(XpathUtil.toBigDecimal((Number) rightValue));
             }
 
-            // åŒ…å«é•¿æ•´æ•°,ä¸”ä¸åŒ…å«å°æ•°,å…¨éƒ¨è½¬åŒ–ä¸ºé•¿æ•´æ•°è®¡ç®—
+            // °üº¬³¤ÕûÊı,ÇÒ²»°üº¬Ğ¡Êı,È«²¿×ª»¯Îª³¤ÕûÊı¼ÆËã
             if (leftValue instanceof Long || rightValue instanceof Long) {
                 return ((Number) leftValue).longValue() + ((Number) rightValue).longValue();
             }
 
-            // å…œåº•,ç”¨doubleæ‰§è¡Œè®¡ç®—
+            // ¶µµ×,ÓÃdoubleÖ´ĞĞ¼ÆËã
             return ((Number) leftValue).doubleValue() + ((Number) rightValue).doubleValue();
         }
 
-        // æœ‰ä¸€æ–¹ä¸æ˜¯æ•°å­—,è½¬åŒ–ä¸ºå­—ç¬¦ä¸²è¿›è¡Œé“¾æ¥
+        // ÓĞÒ»·½²»ÊÇÊı×Ö,×ª»¯Îª×Ö·û´®½øĞĞÁ´½Ó
         return XpathUtil.toPlainString(leftValue) + XpathUtil.toPlainString(rightValue);
     }
 }

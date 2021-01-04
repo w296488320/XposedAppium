@@ -11,7 +11,7 @@ public class CLogUtils {
 
 
 
-	//è§„å®šæ¯æ®µæ˜¾ç¤ºçš„é•¿åº¦
+	//¹æ¶¨Ã¿¶ÎÏÔÊ¾µÄ³¤¶È
 	private static int LOG_MAXLENGTH = 10000;
 
 	public static void e(String msg){
@@ -25,7 +25,7 @@ public class CLogUtils {
 	}
 
 	/**
-	 * logæœ€å¤š 4*1024 é•¿åº¦ è¿™ä¸ª æ–¹æ³• å¯ä»¥è§£å†³ è¿™ä¸ªé—®é¢˜
+	 * log×î¶à 4*1024 ³¤¶È Õâ¸ö ·½·¨ ¿ÉÒÔ½â¾ö Õâ¸öÎÊÌâ
 	 * @param TAG
 	 * @param msg
 	 */
@@ -34,7 +34,7 @@ public class CLogUtils {
 		int start = 0;
 		int end = LOG_MAXLENGTH;
 		for (int i = 0; i < 100; i++) {
-			//å‰©ä¸‹çš„æ–‡æœ¬è¿˜æ˜¯å¤§äºè§„å®šé•¿åº¦åˆ™ç»§ç»­é‡å¤æˆªå–å¹¶è¾“å‡º
+			//Ê£ÏÂµÄÎÄ±¾»¹ÊÇ´óÓÚ¹æ¶¨³¤¶ÈÔò¼ÌĞøÖØ¸´½ØÈ¡²¢Êä³ö
 			if (strLength > end) {
 				Log.e(TAG + i, msg.substring(start, end));
 				start = end;

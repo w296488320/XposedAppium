@@ -178,7 +178,7 @@ public class ViewImage {
     }
 
     /**
-     * @return è·å–å…¨éƒ¨çš„å­èŠ‚ç‚¹ï¼ŒåŒ…æ‹¬çˆ¶ç±»ï¼Œå­ç±»
+     * @return »ñÈ¡È«²¿µÄ×Ó½Úµã£¬°üÀ¨¸¸Àà£¬×ÓÀà
      */
     public ViewImages getAllElements() {
         if (allElementsCache == null) {
@@ -223,6 +223,10 @@ public class ViewImage {
         return parent.childAt(nextSiblingIndex);
     }
 
+    /**
+     * »ñÈ¡È«²¿µÄÏàÁÚµÄView
+     * (ĞÖµÜ½Úµã)
+     */
     public ViewImages siblings() {
         if (parent == null) {
             return new ViewImages();
@@ -240,7 +244,7 @@ public class ViewImage {
     }
 
     /**
-     * @return æ‰“å°å½“å‰viewçš„å…¨éƒ¨å±æ€§
+     * @return ´òÓ¡µ±Ç°viewµÄÈ«²¿ÊôĞÔ
      */
     public String attributes() {
         JSONObject jsonObject = new JSONObject();
@@ -263,9 +267,9 @@ public class ViewImage {
     }
 
     /**
-     * æŸ¥æ‰¾å…¨éƒ¨åŒ¹é…é¡¹
+     * ²éÕÒÈ«²¿Æ¥ÅäÏî
      *
-     * @param xpath xpathè¡¨è¾¾å¼
+     * @param xpath xpath±í´ïÊ½
      */
     public ViewImages xpath(String xpath) {
         return XpathParser.compileNoError(xpath).evaluateToElement(new XNodes(XNode.e(this)));
@@ -274,27 +278,28 @@ public class ViewImage {
     /**
      * "//android.widget.TextView[@contentDescription='XXXXXXXXXXXXXXXX']/text()"
      *
-     * @param xpath xpathè¡¨è¾¾å¼
-     * @return æ‹¿åˆ°å¯¹åº”Viewé‡Œé¢çš„å…·ä½“å†…å®¹
+     * @param xpath xpath±í´ïÊ½
+     * @return ÄÃµ½¶ÔÓ¦ViewÀïÃæµÄ¾ßÌåÄÚÈİ
      */
     public String xpath2String(String xpath) {
         return XpathParser.compileNoError(xpath).evaluateToSingleString(new XNodes(XNode.e(this)));
     }
 
     /**
-     * æ ¹æ®xpathè¡¨è¾¾å¼æ‹¿åˆ°å¯¹åº”çš„ ViewImage
+     * ¸ù¾İxpath±í´ïÊ½ÄÃµ½¶ÔÓ¦µÄ ViewImage
      * "//android.widget.TextView[@id='XXXXXXXXXXXXXX']"
      */
     public ViewImage xpath2One(String xpath) {
         ViewImages viewImages = xpath(xpath);
         if (viewImages.size() == 0) {
+            //Èç¹ûÒ³ÃæÉÏÃ»ÕÒµ½,¿ªÊ¼²éÕÒ¶Ô»°¿ò
             return PageManager.tryGetTopView(xpath);
         }
         return viewImages.get(0);
     }
 
     /**
-     * å°è¯•å¯¹ListItem è¿›è¡Œç‚¹å‡»
+     * ³¢ÊÔ¶ÔListItem ½øĞĞµã»÷
      *
      * @param parent
      * @param mView
@@ -321,10 +326,10 @@ public class ViewImage {
     }
 
     /**
-     * æŸ¥æ‰¾åˆ°å¹¶ç‚¹å‡»
+     * ²éÕÒµ½²¢µã»÷
      *
-     * @param xpath xpathè¡¨è¾¾å¼
-     * @return æ˜¯å¦ç‚¹å‡»æˆåŠŸ
+     * @param xpath xpath±í´ïÊ½
+     * @return ÊÇ·ñµã»÷³É¹¦
      */
     public boolean clickByXpath(String xpath) {
 
@@ -342,11 +347,11 @@ public class ViewImage {
 
 
     /**
-     * å¯¹ TextView ç±»å‹ è®¾ç½®æŒ‡å®šå†…å®¹
+     * ¶Ô TextView ÀàĞÍ ÉèÖÃÖ¸¶¨ÄÚÈİ
      *
-     * @param xpathExpression xpathè¡¨è¾¾å¼
-     * @param content         å…·ä½“å†…å®¹
-     * @return æ˜¯å¦è®¾ç½®æˆåŠŸ
+     * @param xpathExpression xpath±í´ïÊ½
+     * @param content         ¾ßÌåÄÚÈİ
+     * @return ÊÇ·ñÉèÖÃ³É¹¦
      */
     public boolean typeByXpath(String xpathExpression, String content) {
         ViewImages viewImages = xpath(xpathExpression);
@@ -364,11 +369,12 @@ public class ViewImage {
 
 
     /**
-     * ç‚¹å‡»å½“å‰View
+     * µã»÷µ±Ç°View
      */
     public boolean click() {
+
         if(!clickV2()) {
-            //å¼€å§‹å°è¯•å¯¹ListItemè¿›è¡Œç‚¹å‡»,ListIteméœ€è¦Listäº‹ä»¶åˆ†å‘(onItemClick)æ‰ä¼šç”Ÿæ•ˆ
+            //¿ªÊ¼³¢ÊÔ¶ÔListItem½øĞĞµã»÷,ListItemĞèÒªListÊÂ¼ş·Ö·¢(onItemClick)²Å»áÉúĞ§
             ViewImage parentViewImage = parentNode();
             if (parentViewImage != null) {
                 View parentOriginView = parentViewImage.getOriginView();
@@ -379,12 +385,12 @@ public class ViewImage {
                 }
             }
         }
+
         if (originView.isClickable()) {
             if (originView.performClick()) {
                 return true;
             }
         }
-
 
         return false;
     }
@@ -399,7 +405,7 @@ public class ViewImage {
         final float locationOnRootViewY = y - loca[1];
 
         if (locationOnRootViewX < 0 || locationOnRootViewY < 0) {
-            //ç‚¹å‡»åˆ°å±å¹•å¤–é¢äº†
+            //µã»÷µ½ÆÁÄ»ÍâÃæÁË
             return false;
         }
         if (locationOnRootViewX > rootView.getWidth() || locationOnRootViewY > rootView.getHeight()) {
@@ -407,14 +413,16 @@ public class ViewImage {
         }
 
 
-        if (!dispatchInputEvent(genMotionEvent(MotionEvent.ACTION_DOWN, new float[]{locationOnRootViewX, locationOnRootViewY}))) {
+        if (!dispatchInputEvent(genMotionEvent(MotionEvent.ACTION_DOWN,
+                new float[]{locationOnRootViewX, locationOnRootViewY}))) {
             return false;
         }
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                dispatchInputEvent(genMotionEvent(MotionEvent.ACTION_UP, new float[]{locationOnRootViewX, locationOnRootViewY}));
+                dispatchInputEvent(genMotionEvent(MotionEvent.ACTION_UP,
+                        new float[]{locationOnRootViewX, locationOnRootViewY}));
             }
         }, ThreadLocalRandom.current().nextInt(25) + 10);
         return true;
@@ -498,9 +506,9 @@ public class ViewImage {
     }
 
     /**
-     * å‘å³æ»‘åŠ¨
+     * ÏòÓÒ»¬¶¯
      *
-     * @param width æ»‘åŠ¨å®½åº¦ï¼Œå¦‚æœä¸ºè´Ÿæ•°ï¼Œåˆ™å‘å·¦æ»‘åŠ¨
+     * @param width »¬¶¯¿í¶È£¬Èç¹ûÎª¸ºÊı£¬ÔòÏò×ó»¬¶¯
      */
     @SuppressLint("NewApi")
     public void swipeRight(int width) {
@@ -545,20 +553,23 @@ public class ViewImage {
         pointerCoords.y = point[1];
         MotionEvent.PointerProperties pointerProperties = new MotionEvent.PointerProperties();
         pointerProperties.id = 0;
-        //è®¾ç½®æ»‘åŠ¨ç±»å‹é˜²æ­¢éƒ¨åˆ†App å¯¹æ»‘åŠ¨ç±»å‹è¿›è¡Œæ£€æµ‹ï¼Œå½±å“ç‚¹å‡»
+        //ÉèÖÃ»¬¶¯ÀàĞÍ·ÀÖ¹²¿·ÖApp ¶Ô»¬¶¯ÀàĞÍ½øĞĞ¼ì²â£¬Ó°Ïìµã»÷
         pointerProperties.toolType = TOOL_TYPE_FINGER;
         MotionEvent.PointerProperties[] pointerPropertiesArray = new MotionEvent.PointerProperties[]{pointerProperties};
         MotionEvent.PointerCoords[] pointerCoordsArray = new MotionEvent.PointerCoords[]{pointerCoords};
+
         return MotionEvent.obtain(
                 downTime, eventTime, action,
                 1, pointerPropertiesArray, pointerCoordsArray,
-                0, 0, 0, 0, 8, 0, 4098, 0
+                0, 0, 0, 0,
+                8, 0,
+                4098, 0
         );
     }
 
 
     /**
-     * åˆ¤æ–­å½“å‰Viewæ˜¯å¦æ˜¯WebView
+     * ÅĞ¶Ïµ±Ç°ViewÊÇ·ñÊÇWebView
      */
     public WebView findWebViewIfExist() {
         ViewImages webViews = Collector.collect(new Evaluator() {
@@ -581,7 +592,7 @@ public class ViewImage {
 
 
     /**
-     * æ‰“å°å½“å‰viewåŒ…æ‹¬å­viewçš„å…¨éƒ¨å±æ€§
+     * ´òÓ¡µ±Ç°view°üÀ¨×ÓviewµÄÈ«²¿ÊôĞÔ
      */
     @Override
     public String toString() {

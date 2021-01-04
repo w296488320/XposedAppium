@@ -9,7 +9,7 @@ import com.zhenxi.Superappium.xpath.parser.expression.node.AlgorithmUnit;
  * Created by virjar on 17/6/10.
  *
  * @author virjar
- * @since 0.0.1 å¤§äºŽ> è¿ç®—
+ * @since 0.0.1 ´óÓÚ> ÔËËã
  */
 @OpKey(value = ">", priority = 10)
 public class GreaterThanUnit extends AlgorithmUnit {
@@ -20,7 +20,7 @@ public class GreaterThanUnit extends AlgorithmUnit {
         if (leftValue == null || rightValue == null) {
             return XpathUtil.toPlainString(leftValue).compareTo(XpathUtil.toPlainString(rightValue)) > 0;
         }
-        // å·¦å³éƒ½ä¸ä¸ºç©º,å¼€å§‹è®¡ç®—
+        // ×óÓÒ¶¼²»Îª¿Õ,¿ªÊ¼¼ÆËã
         // step one think as number
         if (leftValue instanceof Number && rightValue instanceof Number) {
             return ((Number) leftValue).doubleValue() > ((Number) rightValue).doubleValue();

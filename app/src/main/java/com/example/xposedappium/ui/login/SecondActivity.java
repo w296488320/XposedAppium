@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.CallLog;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -51,6 +54,13 @@ public class SecondActivity extends AppCompatActivity {
 
         showMyDialog();
 
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.e("XposedAppium","当前坐标 "+event.getX()+"  "+event.getY());
+        return true;
     }
 
     private void showMyDialog() {

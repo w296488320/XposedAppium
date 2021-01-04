@@ -10,6 +10,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 public class XposedBridgeProvider implements HookProvider {
+
     @Override
     public void hookMethod(Member method, CompatMethodHook compatMethodHook) {
         XposedBridge.hookMethod(method, new Compat2Xp_MethodHook(compatMethodHook));

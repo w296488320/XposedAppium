@@ -19,7 +19,7 @@ public class LHook implements IXposedHookLoadPackage {
 
         if (lpparam.processName.equals("com.example.xposedappium")) {
             CLogUtils.e("发现匹配的App");
-            //设置页面两秒后开始执行
+            //设置页面Handler 两秒后开始执行
             PageManager.setTaskDuration(2000);
             //添加需要处理的Activity
             AddHandleActivity();
@@ -28,7 +28,10 @@ public class LHook implements IXposedHookLoadPackage {
     }
 
     private void AddHandleActivity() {
-        PageManager.addHandler("com.example.xposedappium.ui.login.LoginActivity", new LoginAcHandler());
-        PageManager.addHandler("com.example.xposedappium.ui.login.SecondActivity", new SecondAcHandler());
+        PageManager.addHandler("com.example.xposedappium.ui.login.LoginActivity",
+                new LoginAcHandler());
+        PageManager.addHandler("com.example.xposedappium.ui.login.SecondActivity",
+                new SecondAcHandler());
+        CLogUtils.e("AddHandleActivity 注册完毕 ");
     }
 }

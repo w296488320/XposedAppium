@@ -1,6 +1,7 @@
 package com.zhenxi.Superappium;
 
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -8,6 +9,9 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.MotionEvent;
+import android.view.View;
+
+import com.zhenxi.Superappium.utils.CLogUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -16,7 +20,7 @@ import static com.zhenxi.Superappium.SuperAppium.TAG;
 
 
 /**
- * äº‹ä»¶æ»‘åŠ¨å°è£…
+ * ÊÂ¼ş»¬¶¯·â×°
  */
 public class SwipeUtils {
 
@@ -26,14 +30,36 @@ public class SwipeUtils {
 
     private static final long DEFAULT_DURATION = 1500;
 
+
+
     /**
-     * æ¨¡æ‹Ÿæ‰‹åŠ¿æ»‘åŠ¨
+     * Ä¬ÈÏ¶Ôµ±Ç°ÆÁÄ»½øĞĞ»¬¶¯
      *
-     * @param view   æ»‘åŠ¨çš„ view
-     * @param startX èµ·å§‹ä½ç½® x
-     * @param startY èµ·å§‹ä½ç½® y
-     * @param endX   ç»ˆç‚¹ä½ç½® x
-     * @param endY   ç»ˆç‚¹ä½ç½® y
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     */
+    public static void simulateScroll(int startX, int startY, int endX, int endY) {
+        Activity topActivity = PageManager.getTopActivity();
+        if(topActivity==null){
+
+            return;
+        }
+        simulateScroll(new ViewImage(topActivity.getWindow().getDecorView()),
+                startX, startY, endX, endY, DEFAULT_DURATION);
+
+    }
+
+
+    /**
+     * Õë¶Ô¶ÔÓ¦µÄView,Ä£ÄâÊÖÊÆ»¬¶¯
+     *
+     * @param view   »¬¶¯µÄ view
+     * @param startX ÆğÊ¼Î»ÖÃ x
+     * @param startY ÆğÊ¼Î»ÖÃ y
+     * @param endX   ÖÕµãÎ»ÖÃ x
+     * @param endY   ÖÕµãÎ»ÖÃ y
      */
     public static void simulateScroll(ViewImage view, int startX, int startY, int endX, int endY) {
         simulateScroll(view, startX, startY, endX, endY, DEFAULT_DURATION);
@@ -41,14 +67,14 @@ public class SwipeUtils {
 
 
     /**
-     * æ¨¡æ‹Ÿæ‰‹åŠ¿æ»‘åŠ¨
+     * Ä£ÄâÊÖÊÆ»¬¶¯
      *
-     * @param view     æ»‘åŠ¨çš„ view
-     * @param startX   èµ·å§‹ä½ç½® x
-     * @param startY   èµ·å§‹ä½ç½® y
-     * @param endX     ç»ˆç‚¹ä½ç½® x
-     * @param endY     ç»ˆç‚¹ä½ç½® y
-     * @param duration æ»‘åŠ¨æ—¶é•¿ å•ä½ï¼šms
+     * @param view     »¬¶¯µÄ view
+     * @param startX   ÆğÊ¼Î»ÖÃ x
+     * @param startY   ÆğÊ¼Î»ÖÃ y
+     * @param endX     ÖÕµãÎ»ÖÃ x
+     * @param endY     ÖÕµãÎ»ÖÃ y
+     * @param duration »¬¶¯Ê±³¤ µ¥Î»£ºms
      */
     public static void simulateScroll(ViewImage view, int startX, int startY, int endX, int endY, long duration) {
         simulateScroll(view, startX, startY, endX, endY, duration, NORMAL);
@@ -56,47 +82,48 @@ public class SwipeUtils {
 
 
     /**
-     * æ¨¡æ‹Ÿæ‰‹åŠ¿æ»‘åŠ¨
+     * Ä£ÄâÊÖÊÆ»¬¶¯
      *
-     * @param view     æ»‘åŠ¨çš„ view
-     * @param startX   èµ·å§‹ä½ç½® x
-     * @param startY   èµ·å§‹ä½ç½® y
-     * @param endX     ç»ˆç‚¹ä½ç½® x
-     * @param endY     ç»ˆç‚¹ä½ç½® y
-     * @param duration æ»‘åŠ¨æ—¶é•¿ å•ä½ï¼šms
-     * @param period   æ»‘åŠ¨å‘¨æœŸ
-     *                 {@link #LOW} æ…¢
-     *                 {@link #NORMAL} æ­£å¸¸
-     *                 {@link #HIGH} é«˜
+     * @param view     »¬¶¯µÄ view
+     * @param startX   ÆğÊ¼Î»ÖÃ x
+     * @param startY   ÆğÊ¼Î»ÖÃ y
+     * @param endX     ÖÕµãÎ»ÖÃ x
+     * @param endY     ÖÕµãÎ»ÖÃ y
+     * @param duration »¬¶¯Ê±³¤ µ¥Î»£ºms
+     * @param period   »¬¶¯ÖÜÆÚ
+     *                 {@link #LOW} Âı
+     *                 {@link #NORMAL} Õı³£
+     *                 {@link #HIGH} ¸ß
      */
     public static void simulateScroll(ViewImage view, int startX, int startY, int endX, int endY, long duration, int period) {
         dealSimulateScroll(view, startX, startY, endX, endY, duration, period);
     }
 
     /**
-     * æ¨¡æ‹Ÿæ‰‹åŠ¿æ»‘åŠ¨
+     * Ä£ÄâÊÖÊÆ»¬¶¯
      *
-     * @param activity å½“å‰çš„ activity
-     * @param startX   èµ·å§‹ä½ç½® x
-     * @param startY   èµ·å§‹ä½ç½® y
-     * @param endX     ç»ˆç‚¹ä½ç½® x
-     * @param endY     ç»ˆç‚¹ä½ç½® y
-     * @param duration æ»‘åŠ¨æ—¶é•¿ å•ä½ ms
-     * @param period   æ»‘åŠ¨å‘¨æœŸ
-     *                 {@link #LOW} æ…¢
+     * @param activity µ±Ç°µÄ activity
+     * @param startX   ÆğÊ¼Î»ÖÃ x
+     * @param startY   ÆğÊ¼Î»ÖÃ y
+     * @param endX     ÖÕµãÎ»ÖÃ x
+     * @param endY     ÖÕµãÎ»ÖÃ y
+     * @param duration »¬¶¯Ê±³¤ µ¥Î» ms
+     * @param period   »¬¶¯ÖÜÆÚ
+     *                 {@link #LOW} Âı
      *                 <p>
-     *                 {@link #NORMAL} æ­£å¸¸
-     *                 {@link #HIGH} é«˜
+     *                 {@link #NORMAL} Õı³£
+     *                 {@link #HIGH} ¸ß
      */
     public static void simulateScroll(ViewImage activity, float startX, float startY, float endX, float endY, long duration, int period) {
         dealSimulateScroll(activity, startX, startY, endX, endY, duration, period);
     }
 
     private static void dealSimulateScroll(ViewImage object, float startX, float startY, float endX, float endY, long duration, int period) {
-        Log.i(TAG, "dealSimulateScroll:" + object);
         long downTime = SystemClock.uptimeMillis();
         Handler handler = new ViewHandler(object);
-        object.getOriginView().dispatchTouchEvent(createFingerMotionEvent(downTime, downTime, MotionEvent.ACTION_DOWN, startX, startY, 0));
+        object.getOriginView().dispatchTouchEvent(
+                createFingerMotionEvent(object.getOriginView(),downTime, downTime,
+                        MotionEvent.ACTION_DOWN, startX, startY, 0));
         GestureBean bean = new GestureBean(startX, startY, endX, endY, duration, period);
         Message.obtain(handler, 1, bean).sendToTarget();
     }
@@ -120,9 +147,12 @@ public class SwipeUtils {
             GestureBean bean = (GestureBean) msg.obj;
             long count = bean.count;
             if (count >= bean.totalCount) {
-                theView.getOriginView().dispatchTouchEvent(createFingerMotionEvent(downTime, downTime, MotionEvent.ACTION_UP, bean.endX, bean.endY, 0));
+                theView.getOriginView().dispatchTouchEvent(createFingerMotionEvent(theView.getOriginView(),
+                        downTime, downTime, MotionEvent.ACTION_UP, bean.endX, bean.endY, 0));
             } else {
-                theView.getOriginView().dispatchTouchEvent(createFingerMotionEvent(downTime, downTime, MotionEvent.ACTION_MOVE, bean.startX + bean.ratioX * count, bean.startY + bean.ratioY * count, 0));
+                theView.getOriginView().dispatchTouchEvent(createFingerMotionEvent(theView.getOriginView(),
+                        downTime, downTime, MotionEvent.ACTION_MOVE, bean.startX + bean.ratioX * count,
+                        bean.startY + bean.ratioY * count, 0));
                 bean.count++;
                 Message message = new Message();
                 message.obj = bean;
@@ -134,37 +164,38 @@ public class SwipeUtils {
     static class GestureBean {
 
         /**
-         * èµ·å§‹ä½ç½® X
+         * ÆğÊ¼Î»ÖÃ X
          */
         float startX;
         /**
-         * èµ·å§‹ä½ç½® Y
+         * ÆğÊ¼Î»ÖÃ Y
          */
         float startY;
         /**
-         * ç»ˆç‚¹ä½ç½® X
+         * ÖÕµãÎ»ÖÃ X
          */
         float endX;
         /**
-         * ç»ˆç‚¹ä½ç½® Y
+         * ÖÕµãÎ»ÖÃ Y
          */
         float endY;
         /**
-         * æ¯ä¸ªå‘¨æœŸ x ç§»åŠ¨çš„ä½ç½®
+         * Ã¿¸öÖÜÆÚ x ÒÆ¶¯µÄÎ»ÖÃ
          */
         float ratioX;
         /**
-         * æ¯ä¸ªå‘¨æœŸ y ç§»åŠ¨çš„ä½ç½®
+         * Ã¿¸öÖÜÆÚ y ÒÆ¶¯µÄÎ»ÖÃ
          */
         float ratioY;
         /**
-         * æ€»å…±å‘¨æœŸ
+         * ×Ü¹²ÖÜÆÚ
          */
         long totalCount;
         /**
-         * å½“å‰å‘¨æœŸ
+         * µ±Ç°ÖÜÆÚ
          */
         long count = 0;
+
         int period = NORMAL;
 
         GestureBean(float startX, float startY, float endX, float endY, long duration, int speed) {
@@ -205,7 +236,19 @@ public class SwipeUtils {
         MotionEvent.PointerProperties[] pointerPropertiesArray = new MotionEvent.PointerProperties[]{pointerProperties};
         MotionEvent.PointerCoords[] pointerCoordsArray = new MotionEvent.PointerCoords[]{pointerCoords};
         // @param deviceId The id for the device that this event came from.  An id of zero indicates that the event didn't come from a physical device;
-        MotionEvent motionEvent = MotionEvent.obtain(downTime, eventTime, action, 1, pointerPropertiesArray, pointerCoordsArray, 0, 0, 0, 0, 8, 0, InputDevice.SOURCE_TOUCHSCREEN, 0);
-        return motionEvent;
+        return MotionEvent.obtain(downTime, eventTime, action, 1, pointerPropertiesArray, pointerCoordsArray, 0, 0, 0, 0, 8, 0, InputDevice.SOURCE_TOUCHSCREEN, 0);
+    }
+
+    private static MotionEvent createFingerMotionEvent(View view, long downTime, long eventTime, int action, float x, float y, int metaState) {
+        MotionEvent.PointerCoords pointerCoords = new MotionEvent.PointerCoords();
+        pointerCoords.x = x;
+        pointerCoords.y = y;
+        MotionEvent.PointerProperties pointerProperties = new MotionEvent.PointerProperties();
+        pointerProperties.id = view.getId();
+        pointerProperties.toolType = TOOL_TYPE_FINGER;
+        MotionEvent.PointerProperties[] pointerPropertiesArray = new MotionEvent.PointerProperties[]{pointerProperties};
+        MotionEvent.PointerCoords[] pointerCoordsArray = new MotionEvent.PointerCoords[]{pointerCoords};
+        // @param deviceId The id for the device that this event came from.  An id of zero indicates that the event didn't come from a physical device;
+        return MotionEvent.obtain(downTime, eventTime, action, 1, pointerPropertiesArray, pointerCoordsArray, 0, 0, 0, 0, 8, 0, InputDevice.SOURCE_TOUCHSCREEN, 0);
     }
 }

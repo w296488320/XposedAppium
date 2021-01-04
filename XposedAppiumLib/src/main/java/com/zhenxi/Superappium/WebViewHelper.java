@@ -64,19 +64,19 @@ public class WebViewHelper {
         if (typeEndFuture == null) {
             typeEndFuture = new JsCallFuture(jsCallFuture.domCookie);
         }
-        //é€šè¿‡xpathå¯»æ‰¾åˆ°å…ƒç´ 
+        //Í¨¹ıxpathÑ°ÕÒµ½ÔªËØ
 
-        //å…ˆè·å–ç„¦ç‚¹
+        //ÏÈ»ñÈ¡½¹µã
         final JsCallFuture finalTypeEndFuture = typeEndFuture;
         jsCallFuture.success().executeJsCode(superAppiumDataLocalVariable + ".dispatchEvent(new Event('focus'));")
                 .addOnJsCallFinishEvent(new OnJsCallFinishEvent() {
                     @Override
                     public void onJsCallFinished(String callResultId) {
-                        //è¾“å…¥æ•°æ®
+                        //ÊäÈëÊı¾İ
                         jsCallFuture.executeJsCode(superAppiumDataLocalVariable + ".value=" + JSON.toJSONString(value) + ";").addOnJsCallFinishEvent(new OnJsCallFinishEvent() {
                             @Override
                             public void onJsCallFinished(String callResultId) {
-                                //è®©è‡ªå·±å¤±å»ç„¦ç‚¹
+                                //ÈÃ×Ô¼ºÊ§È¥½¹µã
                                 jsCallFuture.executeJsCode(superAppiumDataLocalVariable + ".dispatchEvent(new Event('blur'));").addOnJsCallFinishEvent(new OnJsCallFinishEvent() {
                                     @Override
                                     public void onJsCallFinished(String callResultId) {
